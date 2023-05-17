@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html>
+<header
+	th:replace="fragments :: page_header('Categories - Shopme Admin Control Panel','none')"></header>
+<body id="page-top">
+	<div id="wrapper" class="container-fuild">
+		<nav th:replace="nav :: menu"></nav>
+
+		<div id="content-wrapper" class="d-flex flex-column">
+			<div id="content">
+				<nav th:replace="nav :: header_customrer"></nav>
+
+				<div class="container-fluid">
+
+					<h1 class="h3 mb-2 text-gray-800">Manage Catgories</h1>
+
+					<div th:if="${message != null}"
+						class="alert alert-success text-center" th:text="${message}"></div>
+
+					<div class="card shadow mb-4">
+						<div class="card-header py-3">
+							<h6 class="m-0 font-weight-bold text-primary">DataTables</h6>
+						</div>
+
+						<div class="card-body">
+
+							<div class="row">
+								<div class="col-6">
+									<a th:href="@{/categories/new}" style="font-size: 25px;"><i
+										class="fa-solid fa-user-plus icon-gray"></i></a> &nbsp;&nbsp; <a
+										th:href="@{/categories/export/csv}" style="font-size: 25px;"><i
+										class="fa-solid fa-file-csv icon-gray"></i></a>
+								</div>
+								<div class="col-6">
+									<div th:replace="fragments :: search_form('/categories')"></div>
+								</div>
+							</div>
+							<div class="table-responsive">
+								<table id="dataTable" class="table table-bordered" width="100%"
+									cellspacing="0">
+									<thead>
+										<tr>
+											<th>ID</th>
+
+											<th>Category Image</th>
+
+											<th><a class="custom-a"
+												th:href="@{'/categories/page/'+${currentPage}+'?sortDir='+${reverseSortDir}}">Category
+													Name</a><span
+												th:class="${reverseSortDir == 'desc'? 'fa-solid fa-sort-up' : 'fa-solid fa-sort-down'}"></th>
+
+											<th>Alias</th>
+
+											<th>Enable</th>
+
+											<th></th>
+										</tr>
+									</thead>
+
+									<tbody>
+										<tr th:each="category : ${listCategories}">
+											<td class="hideable-column">[[${category.id}]]</td>
+											<td><img style="width: 100px;"
+												class="img-fluid img-thumbnail" alt=""
+												th:src="@{${category.getImagePath()}}"></td>
+											<td>[[${category.name}]]</td>
+											<td>[[${category.alias}]]</td>
+											<td class="text-center"><a th:if="${category.enable}"
+												class="icon-green"
+												th:href="@{'/categories/' + ${category.id} + '/enabled/false'}"
+												style="font-size: 25px;"><i
+													title="Disiable this Category"
+													class="fa-solid fa-circle-check"></i></a> <a
+												th:unless="${category.enable}" title="Enable this Category"
+												class="icon-gray"
+												th:href="@{'/categories/' + ${category.id} + '/enabled/true'}"
+												style="font-size: 25px;"><i
+													class="fa-solid fa-circle-check"></i></a></td>
+											<td class="text-center">
+												<div class="d-flexs">
+													<a th:href="@{'/categories/edit/' + ${category.id}}"
+														title="update" class=""><i
+														class="fa-solid fa-pen-to-square icon-gray"></i></a> &nbsp; <a
+														th:if="${category.hasChidren == false}"
+														th:href="@{'/categories/delete/' + ${category.id}}"
+														class="link-delete" th:userId="${category.id}"
+														th:lastNameUser="${category.name}"><i
+														class="fa-solid fa-trash icon-gray"></i></a>
+												</div>
+											</td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+							<div
+								th:replace="fragments :: pagination('/categories', 'categories')"></div>
+						</div>
+					</div>
+
+
+				</div>
+
+				<div class="modal fade" id="comfirmModal" tabindex="-1"
+					role="dialog">
+					<div class="modal-dialog" role="document">
+						<div class="modal-content">
+							<div class="modal-header">
+								<h5 class="modal-title" id="modalTitle">Delete Comfirmation</h5>
+								<button type="button" class="close" data-dismiss="modal"
+									aria-label="Close">
+									<span aria-hidden="true">&times;</span>
+								</button>
+							</div>
+							<div class="modal-body">
+								<p id="contentComfirmModal"></p>
+							</div>
+							<div class="modal-footer">
+								<a href="" class="btn btn-success" id="yesButton">Yes</a>
+
+								<button type="button" class="btn btn-danger"
+									data-dismiss="modal">No</button>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<footer th:replace="fragments :: footer"></footer>
+		</div>
+	</div>
+
+	<script type="text/javascript">
+		$(document).ready(
+				function() {
+					$(".link-delete")
+							.on(
+									"click",
+									function(e) {
+										e.preventDefault();
+										//e.stopPropagation();
+										//alert($(this).attr("href"));
+
+										link = $(this);
+
+										userId = link.attr("userId");
+										lastNameUser = link
+												.attr("lastNameUser");
+
+										$("#yesButton").attr("href",
+												link.attr("href"));
+
+										$("#contentComfirmModal").text(
+												"Are you sure you want to delete this category "
+														+ userId + ": "
+														+ lastNameUser + "?");
+										$("#comfirmModal").modal();
+									});
+				});
+
+		function resetForm(id) {
+			window.location = "[[@{/users}]]";
+		}
+	</script>
+</body>
+</html>

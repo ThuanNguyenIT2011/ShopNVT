@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<header th:replace="fragments :: page_header('Home - Shopme Admin Control Panel', 'none')"></header>
+<body>
+	<div class="container-fuild">
+		
+		<header th:replace="nav :: menu"></header>
+
+		<div>
+			<h2>Shopme Control Panel</h2>
+			Welcome <a th:href="@{/account}" th:text="${#authentication.principal.fullName}"></a>&nbsp;
+			<span sec:authentication="principal.authorities"></span>
+		</div>
+
+
+
+		<footer th:replace="fragments :: footer"></footer>
+	</div>
+
+	<script type="text/javascript">
+		$(document).ready(function(){
+			$("#logoutLink").on('click', function(e){
+				e.preventDefault();
+				document.logoutForm.submit();
+			})
+		})
+	</script>
+</body>
+</html>

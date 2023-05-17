@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<body>
+	<div th:fragment="content" remove="tag">
+		<div class="row" id="divProductImage">
+			<div class="col">
+				<div><label>Main Image: [[*{mainImage}]]</label></div>
+				<div>
+					<img class="image-fuild" th:src="@{*{mainImagePath}}" 
+						alt="Main image review" id="thumbnail">
+				</div>
+				<div>
+					 <input accept="image/*" th:required="*{mainImage == null}" type="file" 
+					 	class="form-control-file" id="fileImage" name="fileImage">
+				</div>
+				<input type="hidden" th:field="*{mainImage}">
+			</div>
+			
+			<th:block th:each="imageExtra,status : *{productImages}">
+				<div class="col" th:id="'divExtraImage'+${status.index}">
+					<div th:id="'extraImageHeader' + ${status.index}">
+						<label>Extra Image #[[${status.index + 1}]]:</label>
+						
+						<a class="btn fas fa-times-circle" style="float: right"
+							th:href="'javascript:removeExtraImage(' + ${status.index} +')'"></a>
+					</div>
+					<div>
+						<img class="image-fuild" th:src="@{${imageExtra.pathImage}}"  alt="Extra image #1 review" 
+							th:id="'extraThumbnail'+${status.index}">
+					</div>
+					<div>
+						 <input accept="image/*" type="file" class="form-control-file"
+						 	name="extraFileImage">
+					</div>
+					<input type="hidden" name="imageIDs" th:id="'imageId'+${status.index}"
+						th:value="${imageExtra.id}">
+					<input type="hidden" name="imageNames" th:id="'imageName'+${status.index}"
+						th:value="${imageExtra.name}">
+				</div>
+			</th:block>
+			
+			<div class="col" th:id="'divExtraImage' + ${countImageExtras}">
+				<div th:id="'extraImageHeader'+${countImageExtras}">
+					<label>Extra Image #[[${countImageExtras+1}]]:</label></div>
+				<div>
+					<img class="image-fuild" th:src="@{/images/default-product.png}" alt="Extra image #1 review" 
+						th:id="'extraThumbnail'+${countImageExtras}">
+				</div>
+				<div>
+					 <input accept="image/*" type="file" 
+					 	class="form-control-file"
+					 	name="extraFileImage">
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+</html>

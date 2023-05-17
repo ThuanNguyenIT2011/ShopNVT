@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html>
+<head th:replace="fragments :: page_header('Shope', 'none')"></head>
+<body>
+	<div th:replace="fragments :: header"></div>
+	<div th:replace="navbar :: navbar"></div>
+
+
+	<div class="container-fluid">
+		<div class="row px-xl-5">
+			<div class="col-lg-9 table-responsive mb-5">
+				<table
+					class="table table-light table-borderless table-hover text-center mb-0">
+					<thead class="thead-dark">
+						<tr>
+							<th>Products</th>
+							<th>Name</th>
+							<th>Price</th>
+							<th>Quantity</th>
+							<th>Total</th>
+							<th>Remove</th>
+						</tr>
+					</thead>
+					<tbody class="align-middle">
+
+						<th:block th:each="cart : ${cartItems}">
+							<tr>
+								<td class="align-middle"><img
+									th:src="@{${cart.product.mainImagePath}}" alt=""
+									style="width: 50px;"></td>
+								<td class="align-middle">
+									<a th:href="@{'/product_detail/'+${cart.product.alias}}">[[${cart.product.name}]]</a>
+								</td>
+								<td class="align-middle"><span
+									th:if="${CURRENCY_SYMBOL_POSITION=='before'}">[[${CURRENCY_SYMBOL}]]
+										[[${#numbers.formatDecimal(cart.product.priceDiscountPercent,1,THOUSANDS_POIINT_TYPE,DECIMAL_DIGITS,DECIMAL_POINT_TYPE)}]]</span>
+									<span th:unless="${CURRENCY_SYMBOL_POSITION=='before'}">
+										[[${#numbers.formatDecimal(cart.product.priceDiscountPercent,1,THOUSANDS_POIINT_TYPE,DECIMAL_DIGITS,DECIMAL_POINT_TYPE)}]][[${CURRENCY_SYMBOL}]]
+								</span></td>
+
+								<td class="align-middle">
+								
+								<form class="form-inline" th:action="@{/cart/update}" method="get">
+									<input type="hidden" name="id" th:value="${cart.id}">
+									<div class="input-group quantity mx-auto" style="width: 100px;">
+										<div class="input-group-btn">
+											<button class="btn btn-sm btn-primary btn-minus">
+												<i class="fa fa-minus"></i>
+											</button>
+										</div>
+										<input th:value="${cart.quantity}" type="text" name="quantity"
+											class="form-control form-control-sm bg-secondary border-0 text-center"
+											onkeydown="return false">
+										<div class="input-group-btn">
+											<button type="submit" class="btn btn-sm btn-primary btn-plus"> <i
+												class="fa fa-plus"></i>
+											</button>
+										</div>
+									</div>
+								</form>
+									
+								</td>
+								<td class="align-middle"><span
+									th:if="${CURRENCY_SYMBOL_POSITION=='before'}">[[${CURRENCY_SYMBOL}]]
+										[[${#numbers.formatDecimal(cart.quantity *
+										cart.product.priceDiscountPercent,1,THOUSANDS_POIINT_TYPE,DECIMAL_DIGITS,DECIMAL_POINT_TYPE)}]]</span>
+									<span th:unless="${CURRENCY_SYMBOL_POSITION=='before'}">
+										[[${#numbers.formatDecimal(cart.quantity *
+										cart.product.priceDiscountPercent,1,THOUSANDS_POIINT_TYPE,DECIMAL_DIGITS,DECIMAL_POINT_TYPE)}]][[${CURRENCY_SYMBOL}]]
+								</span></td>
+								<td class="align-middle"><a
+									th:href="@{'/cart/delete/' + ${cart.id}}"
+									class="btn btn-sm btn-danger"> <i class="fa fa-times"></i>
+								</a></td>
+							</tr>
+							<th:block>
+					</tbody>
+				</table>
+			</div>
+			<div class="col-lg-3">
+				<form class="mb-30" action="">
+					<div class="input-group">
+						<input type="text" class="form-control border-0 p-4"
+							placeholder="Coupon Code">
+						<div class="input-group-append">
+							<button class="btn btn-primary">Apply Coupon</button>
+						</div>
+					</div>
+				</form>
+				<h5 class="section-title position-relative text-uppercase mb-3">
+					<span class="bg-secondary pr-3">Cart Summary</span>
+				</h5>
+				<div class="bg-light p-30 mb-5">
+					<div class="border-bottom pb-2">
+						<div class="d-flex justify-content-between mb-3">
+							<h6>Subtotal</h6>
+							<h6>$150</h6>
+						</div>
+						<div class="d-flex justify-content-between">
+							<h6 class="font-weight-medium">Shipping</h6>
+							<h6 class="font-weight-medium">$10</h6>
+						</div>
+					</div>
+					<div class="pt-2">
+						<div class="d-flex justify-content-between mt-2">
+							<h5>Total</h5>
+							<h5>
+								<span
+									th:if="${CURRENCY_SYMBOL_POSITION=='before'}">[[${CURRENCY_SYMBOL}]]
+										[[${#numbers.formatDecimal(total, 1,THOUSANDS_POIINT_TYPE,DECIMAL_DIGITS,DECIMAL_POINT_TYPE)}]]</span>
+									<span th:unless="${CURRENCY_SYMBOL_POSITION=='before'}">
+										[[${#numbers.formatDecimal(total, 1,THOUSANDS_POIINT_TYPE,DECIMAL_DIGITS,DECIMAL_POINT_TYPE)}]][[${CURRENCY_SYMBOL}]]
+								</span>
+							</h5>
+						</div>
+						<button
+							class="btn btn-block btn-primary font-weight-bold my-3 py-3">Proceed
+							To Checkout</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<th:block th:if="${message != null}">
+		<input type="hidden" id="message" th:value="${message}">
+	</th:block>
+	<th:block th:unless="${message != null}">
+		<input type="hidden" id="message" th:value="${message}">
+	</th:block>
+
+	<div class="position-fixed bottom-0 right-0 p-3"
+		style="z-index: 5; right: 0; bottom: 0;">
+		<div id="liveToast" class="toast hide" role="alert"
+			aria-live="assertive" aria-atomic="true" data-delay="2000">
+			<div class="toast-header">
+				<strong
+					class="mr-auto">Thông báo</strong> <small>1s</small>
+				<button type="button" class="ml-2 mb-1 close" data-dismiss="toast"
+					aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="toast-body" th:if="${message != null}">[[${message}]]
+			</div>
+		</div>
+	</div>
+
+	<div th:replace="fragments :: footer"></div>
+
+	<!-- Back to Top -->
+	<a href="#" class="btn btn-primary back-to-top"><i
+		class="fa fa-angle-double-up"></i></a>
+
+	<script type="text/javascript" th:src="@{/js/main.js}"></script>
+
+	<script type="text/javascript">
+		$(document).ready(function() {
+			message = $('#message').val();
+			if (message !== ''){
+				$('#liveToast').toast('show')
+			}
+		})
+	</script>
+	
+
+</body>
+</html>

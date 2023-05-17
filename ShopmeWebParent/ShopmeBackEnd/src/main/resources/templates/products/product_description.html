@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+<body>
+	<div th:fragment="content" remove="tag">
+		<div class="mt-2">
+			<label>Short Description:</label>
+			<textarea class="form-control" th:field="*{shortDescription}" rows="5" required="required"></textarea>
+		</div>
+		
+		<div class="mt-2">
+			<label>Full Description:</label>
+			<textarea class="form-control" th:field="*{fullDescription}" rows="5" required="required"></textarea>
+		</div>
+	</div>
+</body>
+</html>

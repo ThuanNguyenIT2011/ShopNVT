@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+<body>
+	<nav th:fragment="header_customrer"
+		class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
+
+		<ul class="navbar-nav ml-auto">
+			<li class="nav-item dropdown no-arrow"><a
+				class="nav-link dropdown-toggle" href="#" id="userDropdown"
+				role="button" data-toggle="dropdown" aria-haspopup="true"
+				aria-expanded="false"> <span
+					class="mr-2 d-none d-lg-inline text-gray-600 small">[[${#authentication.principal.fullName}]]</span> 
+						<img class="img-profile rounded-circle"
+							th:src="@{${#authentication.principal.pathImage}}">
+			</a>
+				<div
+					class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
+					aria-labelledby="userDropdown">
+					<a class="dropdown-item" th:href="@{/account}"> <i
+						class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i> Profile
+					</a> 
+					<div class="dropdown-divider"></div>
+					<a class="dropdown-item" href="#" id="logoutLink"> <i
+						class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
+						Logout
+					</a>
+				</div></li>
+
+		</ul>
+
+	</nav>
+
+
+	<header th:fragment="menu" class="bg-gradient-primary sidebar sidebar-dark accordion">
+		<form th:action="@{/logout}" method="post" th:hidden="true"
+			name="logoutForm">
+			<input type="submit">
+		</form>
+
+		<nav
+			class="navbar-nav ">
+			<a
+				class="sidebar-brand d-flex align-items-center justify-content-center"
+				href="index.html">
+				<div class="sidebar-brand-icon rotate-n-15">
+					<i class="fas fa-laugh-wink"></i>
+				</div>
+				<div class="sidebar-brand-text mx-3">
+					SB Admin <sup>2</sup>
+				</div>
+			</a>
+
+			<ul class="navbar-nav mr-auto">
+				<li class="nav-item" sec:authorize="hasAuthority('Admin')"><a
+					class="nav-link" th:href="@{/users}">Nhân viên</a></li>
+				<hr class="sidebar-divider my-0">
+				<th:block sec:authorize="hasAnyAuthority('Admin', 'Editor')">
+					<li class="nav-item"><a class="nav-link"
+						th:href="@{/categories}">Danh mục</a></li>
+				</th:block>
+
+				<th:block sec:authorize="hasAnyAuthority('Admin', 'Editor')">
+					<li class="nav-item"><a class="nav-link" th:href="@{/brands}">Nhãn hiệu</a></li>
+				</th:block>
+
+
+				<th:block
+					sec:authorize="hasAnyAuthority('Admin', 'Editor', 'Shipper', 'Salesperson')">
+					<li class="nav-item"><a class="nav-link"
+						th:href="@{/products}">Sản phẩm</a></li>
+				</th:block>
+
+
+				<th:block sec:authorize="hasAnyAuthority('Admin', 'Salesperson')">
+					<li class="nav-item"><a class="nav-link"
+						th:href="@{/customers}">Khách hàng</a></li>
+				</th:block>
+				
+				<th:block sec:authorize="hasAnyAuthority('Admin', 'Salesperson')">
+					<li class="nav-item"><a class="nav-link"
+						th:href="@{/shipping_reates}">Phí vận chuyển</a></li>
+				</th:block>
+
+				<th:block sec:authorize="hasAnyAuthority('Admin', 'Salesperson')">
+					<li class="nav-item"><a class="nav-link"
+						th:href="@{/shipping}">Shipping</a></li>
+				</th:block>
+
+				<th:block
+					sec:authorize="hasAnyAuthority('Admin', 'Salesperson', 'Shipper')">
+					<li class="nav-item"><a class="nav-link" th:href="@{/oders}">Đơn hàng</a>
+					</li>
+				</th:block>
+
+				<th:block sec:authorize="hasAnyAuthority('Admin', 'Salesperson')">
+					<li class="nav-item"><a class="nav-link" th:href="@{/report}">Báo cáo</a></li>
+				</th:block>
+
+				<th:block sec:authorize="hasAnyAuthority('Admin', 'Editor')">
+					<li class="nav-item"><a class="nav-link" th:href="@{articles}">Bài viết</a></li>
+				</th:block>
+
+				<th:block sec:authorize="hasAuthority('Admin')">
+					<li class="nav-item" sec:authorize="hasAuthority('Admin')"><a
+						class="nav-link" th:href="@{/settings}">Setting</a></li>
+				</th:block>
+
+
+			</ul>
+		</nav>
+	</header>
+
+
+</body>
+</html>

@@ -1,0 +1,206 @@
+<div class="modal-header">
+  <h5 class="modal-title">Product Detail</h5>
+  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<div class="modal-body">
+  <ul class="nav nav-tabs" id="myTab" role="tablist">
+	<li class="nav-item" role="presentation">
+		<button class="nav-link active" data-toggle="tab"
+			data-target="#overview" type="button">Overview</button>
+	</li>
+	<li class="nav-item" role="presentation">
+		<button class="nav-link" data-toggle="tab"
+			data-target="#description" type="button" role="tab">Description</button>
+	</li>
+	<li class="nav-item" role="presentation">
+		<button class="nav-link" data-toggle="tab"
+			data-target="#images" type="button" role="tab">Images</button>
+	</li>
+	<li class="nav-item" role="presentation">
+		<button class="nav-link" id="messages-tab" data-toggle="tab"
+			data-target="#details" type="button" role="tab">Details</button>
+	</li>
+	<li class="nav-item" role="presentation">
+		<button class="nav-link" id="messages-tab" data-toggle="tab"
+			data-target="#shipping" type="button" role="tab">Shipping</button>
+	</li>
+</ul>
+
+<!-- Tab panes -->
+<div class="tab-content" th:object="${product}">
+	<div class="tab-pane active p-3" id="overview" role="tabpanel">
+		<input type="hidden" th:field="*{id}">
+		<div class="form-group row">
+			<label for="name" class="col-sm-2 col-form-label">Product
+				Name:</label>
+			<div class="col-sm-10">
+				<input type="text" class="form-control" th:field="*{name}"
+					readonly="readonly">
+			</div>
+		</div>
+
+		<div class="form-group row">
+			<label for="name" class="col-sm-2 col-form-label">Product
+				Alias:</label>
+			<div class="col-sm-10">
+				<input type="text" class="form-control" th:field="*{alias}"
+					readonly="readonly">
+			</div>
+		</div>
+
+		<div class="form-group row">
+			<label for="name" class="col-sm-2 col-form-label">Brand:</label>
+			<div class="col-sm-10">
+				<input type="text" class="form-control" th:field="*{brand.name}"
+					readonly="readonly">
+			</div>
+		</div>
+
+		<div class="form-group row">
+			<label for="name" class="col-sm-2 col-form-label">Categories:</label>
+			<div class="col-sm-10">
+				<input type="text" class="form-control" th:field="*{category.name}"
+					readonly="readonly">
+			</div>
+		</div>
+
+		<div class="form-group row">
+			<label for="enable" class="col-sm-2 col-form-label">Enabled</label>
+			<div class="col-sm-10">
+				<div class="form-check">
+					<input th:field="*{enabled}" readonly="readonly"
+						class="form-check-input position-static" type="checkbox">
+				</div>
+			</div>
+		</div>
+
+		<div class="form-group row">
+			<label for="enable" class="col-sm-2 col-form-label">In Stock</label>
+			<div class="col-sm-10">
+				<div class="form-check">
+					<input th:field="*{inStock}" readonly="readonly"
+						class="form-check-input position-static" type="checkbox">
+				</div>
+			</div>
+		</div>
+		
+		<div class="form-group row">
+			<label for="name" class="col-sm-2 col-form-label">Cost:</label>
+			<div class="col-sm-10">
+				<input type="text" readonly="readonly" class="form-control" th:field="*{cost}">
+			</div>
+		</div>
+		
+		<div class="form-group row">
+			<label for="name" class="col-sm-2 col-form-label">List price:</label>
+			<div class="col-sm-10">
+				<input type="text" readonly="readonly" class="form-control" th:field="*{price}">
+			</div>
+		</div>
+		
+		<div class="form-group row">
+			<label for="name" class="col-sm-2 col-form-label">Discount:</label>
+			<div class="col-sm-10">
+				<input readonly="readonly" type="text" class="form-control" th:field="*{discountPercent}">
+			</div>
+		</div>
+		
+		<div class="form-group row">
+			<label for="name" class="col-sm-2 col-form-label">Updated Time:</label>
+			<div class="col-sm-10">
+				<span>[[*{updatedTime}]]</span>
+			</div>
+		</div>
+	</div>
+
+	<div class="tab-pane" id="description" role="tabpanel">
+		<div class="mt-2">
+			<label>Short Description:</label>
+			<div class="border p-2 m-2" th:utext="*{shortDescription}"></div>
+		</div>
+		
+		<div class="mt-2">
+			<label>Full Description:</label>
+			<div class="border p-2 m-2" th:utext="*{fullDescription}"></div>
+		</div>
+	</div>
+
+
+	<div class="tab-pane" id="images" role="tabpanel">
+		<div class="row p-3">
+			<div class="col m-3 p-2 border">
+				<div><label>Main Image: [[*{mainImage}]]</label></div>
+				<div>
+					<img class="image-fuild" th:src="@{*{mainImagePath}}" 
+						alt="Main image review" id="thumbnail">
+				</div>
+			</div>
+			<th:block th:each="imageExtra,status : *{productImages}">
+				<div class="col m-3 p-2 border" th:id="'divExtraImage'+${status.index}">
+					<div th:id="'extraImageHeader' + ${status.index}">
+						<label>Extra Image #[[${status.index + 1}]]:</label>
+						
+					</div>
+					<div>
+						<img class="image-fuild" th:src="@{${imageExtra.pathImage}}"  alt="Extra image #1 review" 
+							th:id="'extraThumbnail'+${status.index}">
+					</div>
+				</div>
+			</th:block>
+		</div>
+		
+	</div>
+
+	<div class="tab-pane" id="details" role="tabpanel">
+		<table class="table mt-2 table-striped">
+		  <thead class="thead-dark">
+		    <tr>
+		      <th scope="col">Name</th>
+		      <th scope="col">Value</th>
+		    </tr>
+		  </thead>
+		  <tbody>
+		    <tr th:each="detail : *{productDetailts}">
+		      <td>[[${detail.name}]]</td>
+		      <td>[[${detail.value}]]</td>
+		    </tr>
+		  </tbody>
+		</table>
+	</div>
+
+	<div class="tab-pane" id="shipping" role="tabpanel">
+		<div class="form-group row mt-2">
+			<label class="col-sm-2 col-form-label">Length (inch):</label>
+			<div class="col-sm-10">
+				<input readonly="readonly" type="number" step="0.01" class="form-control" th:field="*{length}">
+			</div>
+		</div>
+		
+		<div class="form-group row">
+			<label class="col-sm-2 col-form-label">Width (inch):</label>
+			<div class="col-sm-10">
+				<input readonly="readonly" type="number" step="0.01" class="form-control" th:field="*{width}">
+			</div>
+		</div>
+		
+		<div class="form-group row">
+			<label class="col-sm-2 col-form-label">Height (inch):</label>
+			<div class="col-sm-10">
+				<input readonly="readonly" type="number" step="0.01" class="form-control" th:field="*{height}">
+			</div>
+		</div>
+		
+		<div class="form-group row">
+			<label class="col-sm-2 col-form-label">Weight (Pounds):</label>
+			<div class="col-sm-10">
+				<input readonly="readonly" type="number" step="0.01" class="form-control" th:field="*{weight}">
+			</div>
+		</div>
+	</div>
+</div>
+</div>
+<div class="modal-footer">
+  <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+</div>

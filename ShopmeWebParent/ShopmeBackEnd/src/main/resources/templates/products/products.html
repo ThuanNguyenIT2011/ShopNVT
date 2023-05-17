@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html>
+<header
+	th:replace="fragments :: page_header('Categories - Shopme Admin Control Panel', 'none')"></header>
+<body id="page-top">
+	<div id="wrapper" class="container-fuild">
+		<nav th:replace="nav :: menu"></nav>
+
+		<div id="content-wrapper" class="d-flex flex-column">
+			<div id="content">
+				<nav th:replace="nav :: header_customrer"></nav>
+
+				<div class="container-fluid">
+
+					<h1 class="h3 mb-2 text-gray-800">Manage Products</h1>
+
+					<div th:if="${message != null}"
+						class="alert alert-success text-center" th:text="${message}"></div>
+
+					<div class="card shadow mb-4">
+						<div class="card-header py-3">
+							<h6 class="m-0 font-weight-bold text-primary">DataTables</h6>
+						</div>
+
+						<div class="card-body">
+
+							<div class="row">
+								<div class="col-6">
+									<a th:href="@{/products/new}" style="font-size: 25px;"><i
+										class="fa-solid fa-user-plus icon-gray"></i></a> &nbsp;&nbsp; <a
+										th:href="@{/products/export/csv}" style="font-size: 25px;"><i
+										class="fa-solid fa-file-csv icon-gray"></i></a>
+								</div>
+								<div class="col-6">
+									
+									<!--  -->
+									<form class="d-flex justify-content-between" th:action="@{'/products/page/1'}" id="formFilter">
+										<select name="catId" id="dropdownCat" required="required" class="form-control col-4">
+											<option value="0">All Categories</option>
+											<th:block th:each="cat : ${listCategories}">
+												<option th:selected="(${catId==cat.id})" th:value="${cat.id}">[[${cat.name}]]</option>
+											</th:block>
+										</select>
+									
+										<input type="hidden" name="sortField" th:value="${sortField}">
+										<input type="hidden" name="sortDir" th:value="${sortDir}">
+										<div class="form-row align-items-center"
+											style="justify-content: end;">
+											<div class="col-auto">
+												<label class="sr-only" for="inlineFormInputGroup">Keyword</label>
+												<div class="input-group mb-2">
+													<div class="input-group-prepend">
+														<div class="input-group-text">Keyword</div>
+													</div>
+													<input name="keyword" th:value="${keyword}" type="search"
+														class="form-control" id="inlineFormInputGroup"
+														placeholder="Keyword">
+												</div>
+											</div>
+											<div class="col-auto">
+												<button type="submit" class="btn btn-primary mb-2">
+													<i class="fa-solid fa-magnifying-glass"></i>
+												</button>
+											</div>
+
+											<div class="col-auto">
+												<button class="btn btn-secondary mb-2" onclick="resetForm()"
+													value="Clear">
+													<i class="fa-solid fa-eraser"></i>
+												</button>
+											</div>
+
+										</div>
+									</form>
+									<!--  -->
+
+									
+								</div>
+							</div>
+							<div class="table-responsive">
+								<table id="dataTable" class="table table-bordered" width="100%"
+									cellspacing="0">
+									<thead>
+										<tr>
+											<th
+												th:replace="fragments :: column_link('/products', 'id','ID', 'none')"></th>
+											</th>
+
+											<th>Main Image</th>
+
+											<th
+												th:replace="fragments :: column_link('/products', 'name','Product Name', 'none')"></th>
+											</th>
+
+											<th
+												th:replace="fragments :: column_link('/products', 'brand','Brand', 'none')"></th>
+											</th>
+
+											<th
+												th:replace="fragments :: column_link('/products', 'category','Category', 'none')"></th>
+											</th>
+
+											<th>Enabled</th>
+											<th></th>
+										</tr>
+									</thead>
+
+									<tbody>
+										<tr th:each="product : ${listProducts}">
+											<td class="hideable-column">[[${product.id}]]</td>
+											<td><img style="width: 100px;"
+												class="img-fluid img-thumbnail" alt=""
+												th:src="@{${product.mainImagePath}}"></td>
+											<td><a class="link-detail"
+												th:href="@{'/products/detail/' + ${product.id}}"
+												title="View details of this product">[[${product.getShortName()}]]</a>
+											</td>
+											<td>[[${product.brand.name}]]</td>
+											<td>[[${product.category.name}]]</td>
+
+											<div
+												th:replace="fragments :: status(${product.enabled}, '/products/' + ${product.id}, 'product')"></div>
+
+											<td class="d-flex align-items-center"><a
+												class="link-detail"
+												th:href="@{'/products/detail/' + ${product.id}}"
+												title="View details of this product"> <i
+													class="fa-solid fa-circle-info icon-gray"></i></a> &nbsp;
+												<div
+													th:replace="fragments :: update_delete('/products', ${product.id}, ${product.name})"></div>
+											</td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+							<div
+								th:replace="fragments :: pagination('/products', 'products')"></div>
+						</div>
+						<footer th:replace="fragments :: footer"></footer>
+					</div>
+
+
+				</div>
+
+				<div class="modal fade" id="comfirmModal" tabindex="-1"
+					role="dialog">
+					<div class="modal-dialog" role="document">
+						<div class="modal-content">
+							<div class="modal-header">
+								<h5 class="modal-title" id="modalTitle">Delete Comfirmation</h5>
+								<button type="button" class="close" data-dismiss="modal"
+									aria-label="Close">
+									<span aria-hidden="true">&times;</span>
+								</button>
+							</div>
+							<div class="modal-body">
+								<p id="contentComfirmModal"></p>
+							</div>
+							<div class="modal-footer">
+								<a href="" class="btn btn-success" id="yesButton">Yes</a>
+
+								<button type="button" class="btn btn-danger"
+									data-dismiss="modal">No</button>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="modal fade " id="detailModal" tabindex="-1">
+		<div class="modal-dialog modal-xl">
+			<div class="modal-content"></div>
+		</div>
+	</div>
+
+	<script type="text/javascript">
+		modulUrl = "[[@{products}]]"
+		$(document).ready(
+				function() {
+					$('#dropdownCat').on("change", function(){
+						$('#formFilter').submit();
+					})
+					$('.link-detail').on(
+							"click",
+							function(e) {
+								e.preventDefault();
+								linkDetail = $(this).attr('href');
+
+								$("#detailModal").modal('show').find(
+										'.modal-content').load(linkDetail);
+
+							})
+
+					$(".link-delete")
+							.on(
+									"click",
+									function(e) {
+										e.preventDefault();
+
+										link = $(this);
+
+										userId = link.attr("userId");
+										lastNameUser = link
+												.attr("lastNameUser");
+
+										$("#yesButton").attr("href",
+												link.attr("href"));
+
+										$("#contentComfirmModal").text(
+												"Are you sure you want to delete this product "
+														+ userId + ": "
+														+ lastNameUser + "?");
+										$("#comfirmModal").modal();
+									});
+				});
+
+		function resetForm(id) {
+			window.location = "[[@{/products}]]";
+		}
+	</script>
+</body>
+</html>

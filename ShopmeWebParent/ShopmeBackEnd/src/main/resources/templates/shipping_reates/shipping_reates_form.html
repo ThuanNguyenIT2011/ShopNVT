@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html>
+<header th:replace="fragments :: page_header(${pageTitle},'none')"></header>
+<body id="page-top">
+	<div id="wrapper" class="container-fuild">
+		<nav th:replace="nav :: menu"></nav>
+
+		<div id="content-wrapper" class="d-flex flex-column">
+			<div id="content">
+				<nav th:replace="nav :: header_customrer"></nav>
+
+				<div class="container-fluid">
+					<h1 class="h3 mb-2 text-gray-800">Quản lý tỷ lệ vẩn chuyển
+						hàng</h1>
+					<div class="card shadow mb-4">
+						<div class="card-header py-3">
+							<h6 class="m-0 font-weight-bold text-primary">[[${pageTitle}]]</h6>
+						</div>
+						<div class="card-body">
+							<form class="container" th:action="@{/shipping_rates/save}"
+								method="post" th:object="${shippingRate}"
+								style="max-width: 700px;">
+								<input type="hidden" th:field="*{id}">
+								<div class="border rounded p-3">
+									<div class="form-group row">
+										<label for="name" class="col-sm-4 col-form-label">Quốc
+											gia:</label>
+										<div class="col-sm-8">
+											<select required="required" class="form-control" th:field="*{country}">
+												<option value="0">Choose Country</option>
+												<th:block th:each="con :${listCountries}">
+													<option th:value="${con.id}">[[${con.name}]]</option>
+												</th:block>
+											</select>
+										</div>
+									</div>
+
+									<div class="form-group row">
+										<label for="name" class="col-sm-4 col-form-label">Bang/tỉnh
+											đến:</label>
+										<div class="col-sm-8">
+											<select class="form-control" th:field="*{state}"></select>
+										</div>
+									</div>
+									
+									<div class="form-group row">
+										<label for="name" class="col-sm-4 col-form-label">Tỷ lệ:</label>
+										<div class="col-sm-8">
+											<input required="required" type="number" step="0.01" min="0" class="form-control" th:field="*{rate}"
+												 minlength="3" maxlength="45">
+										</div>
+									</div>
+									
+									<div class="form-group row">
+										<label for="name" class="col-sm-4 col-form-label">Ngày giao:</label>
+										<div class="col-sm-8">
+											<input required="required" type="number" step="1" min="0" class="form-control" th:field="*{days}"
+												minlength="3" maxlength="45">
+										</div>
+									</div>
+									
+									<div class="form-group row">
+										<label for="name" class="col-sm-4 col-form-label">Thanh toán khi giao hàng:</label>
+										<div class="col-sm-8" style="margin-top: 7px;">
+											<div class="form-check">
+												<input th:field="*{codSupported}" type="checkbox" class="form-check-input">
+											</div>
+										</div>
+									</div>
+
+									<div class="text-center">
+										<input type="submit" class="btn btn-primary m-3" value="Save">
+										<input type="button" class="btn btn-secondary" value="Cancels"
+											id="buttonCancel">
+									</div>
+
+								</div>
+
+							</form>
+							<footer th:replace="fragments :: footer"></footer>
+						</div>
+					</div>
+
+				</div>
+			</div>
+		</div>
+
+		<th:block th:each="state :${listStates}">
+			<input name="nameStates" type="hidden" th:value="${state.name}">
+			<input name="parentId" type="hidden" th:value="${state.country.id}">
+			<input name="statesId" type="hidden" th:value="${state.id}">
+		</th:block>
+		
+		
+
+		<div th:replace="modal_fragments :: modal_dialog"></div>
+
+	
+	</div>
+
+
+	<!--  -->
+
+	<div class="container-fuild">
+		<header th:replace="nav :: menu"></header>
+
+		<div>
+			<h1>Manage Categories | [[${pageTitle}]]</h1>
+		</div>
+
+
+
+		<div th:replace="modal_fragments :: modal_dialog"></div>
+
+		<footer th:replace="fragments :: footer"></footer>
+	</div>
+	
+	
+	<th:block th:if="${message != null}">
+		<input type="hidden" id="message" th:value="${message}">
+		<input type="hidden" id="stateHidden" th:value="${shippingRate.state.name}">
+	</th:block>
+	<th:block th:unless="${message != null}">
+		<input type="hidden" id="message" th:value="${message}">
+	</th:block>
+
+	<div class="position-fixed bottom-0 right-0 p-3"
+		style="z-index: 5; right: 0; bottom: 0;">
+		<div id="liveToast" class="toast hide" role="alert"
+			aria-live="assertive" aria-atomic="true" data-delay="2000">
+			<div class="toast-header">
+				<strong
+					class="mr-auto">Thông báo</strong> <small>1s</small>
+				<button type="button" class="ml-2 mb-1 close" data-dismiss="toast"
+					aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="toast-body" th:if="${message != null}">[[${message}]]
+			</div>
+		</div>
+	</div>
+
+	<script type="text/javascript">
+		moduleURL = "[[@{/shipping_reates}]]";
+		$(document)
+				.ready(
+						function() {
+							message = $('#message').val();
+							if (message !== ''){
+								$('#liveToast').toast('show')
+								
+								
+							}
+
+							nameStatesBycontry = []; //Tên các state/provine
+							statesId = []; //Id của các state
+							
+							$("input[name=nameStates]").each(function() {
+								nameStatesBycontry.push($(this).val());
+							});
+
+							$("input[name=statesId]").each(function() {
+								statesId.push($(this).val());
+							});
+							conceptName = $('#country').find(":selected").val();
+							stateHidden = $('#stateHidden').val();
+							
+							if (conceptName != 0) {
+								html = "";
+								countStateByCountry = 0;
+								$("input[name=parentId]").each(function(index) {
+									state = $(this);
+									if (conceptName == state.val()) {
+										selectedState = stateHidden ==  nameStatesBycontry[index];
+										html += `<option selected="${selectedState}" value="${statesId[index]}">${nameStatesBycontry[index]}</option>`;
+										$('#state').html(html);
+										countStateByCountry++;
+									}
+								});
+							}
+							
+							
+							$('#country')
+									.change(
+											function() {
+												con = $(this);
+												if (con.val() == 0) {
+													$('#state').empty();
+													return;
+												}
+												html = "";
+												countStateByCountry = 0;
+												$("input[name=parentId]").each(function(index) {
+													state = $(this);
+													if (con.val() == state.val()) {
+														selectedState = stateHidden ==  nameStatesBycontry[index];
+														html += `<option selected="${selectedState}" value="${statesId[index]}">${nameStatesBycontry[index]}</option>`;
+														$('#state').html(html);
+														countStateByCountry++;
+													}
+												});
+												if (countStateByCountry == 0) {
+													$('#state').empty();
+												}
+											});
+						})
+	</script>
+	<script type="text/javascript" th:src="@{/js/common_form.js}"></script>
+</body>
+</html>

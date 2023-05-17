@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html>
+<head th:replace="fragments :: page_header('Shope', 'none')"></head>
+<body>
+	<div th:replace="fragments :: header"></div>
+	<div th:replace="navbar :: navbar"></div>
+
+	<div class="container">
+		<div class="row">
+			<div class="col-2">
+				<div th:replace="fragments :: navManagementAccount"></div>
+			</div>
+
+			<div class="col-10">
+				<div class="text-center">
+					<h1 class="h4 text-gray-900 mb-4">Edit Profile</h1>
+				</div>
+				
+				<div th:if="${message != null}"
+						class="alert alert-success text-center" th:text="${message}"></div>
+				<form class="user" th:action="@{/update_account_details}" method="post"
+					th:object="${customer}">
+					<input type="hidden" th:field="*{id}">
+					<div class="row">
+						<div class="col-md-6 form-group">
+							<label>First Name</label> <input class="form-control"
+								required="required" maxlength="45" minlength="2" type="text"
+								th:field="*{firstName}" placeholder="John">
+						</div>
+						<div class="col-md-6 form-group">
+							<label>Last Name</label> <input class="form-control"
+								required="required" maxlength="45" minlength="2" type="text"
+								placeholder="Doe" th:field="*{lastName}">
+						</div>
+						<div class="col-md-6 form-group">
+							<label>E-mail</label> <input class="form-control" type="email"
+								readonly="readonly" maxlength="45" minlength="8"
+								th:field="*{email}" placeholder="example@email.com">
+						</div>
+						<div class="col-md-6 form-group">
+							<label>Mobile No</label> <input class="form-control"
+								required="required" maxlength="15" minlength="8"
+								th:field="*{phoneNumber}" type="tel" placeholder="+123 456 789">
+						</div>
+
+						<div th:if="*{autheticationType.name() == 'DATABASE'}" class="col-md-6 form-group">
+							<label>Password</label> <input class="form-control"
+								 maxlength="15" minlength="6"
+								th:field="*{password}" type="password" placeholder="Password"
+								oninput="checkPasswordMatch(document.getElementById('confirmPassword'))">
+						</div>
+
+						<div th:if="*{autheticationType.name() == 'DATABASE'}" class="col-md-6 form-group">
+							<label>Re-type Password:</label> <input class="form-control"
+								 maxlength="15" minlength="6"
+								id="confirmPassword" type="password" placeholder="Password"
+								oninput="checkPasswordMatch(this)">
+						</div>
+
+						<div class="col-md-6 form-group">
+							<label>Address Line 1</label> <input class="form-control"
+								required="required" maxlength="64" minlength="3"
+								th:field="*{addressLine1}" type="text" placeholder="123 Street">
+						</div>
+
+						<div class="col-md-6 form-group">
+							<label>Address Line 2</label> <input class="form-control"
+								maxlength="64" minlength="3" th:field="*{addressLine2}"
+								type="text" placeholder="123 Street">
+						</div>
+
+						<div class="col-md-6 form-group">
+							<label>Country</label> <select class="custom-select"
+								th:field="*{country}">
+								<option value="0">Choose Country</option>
+								<th:block th:each="con : ${listCountry}">
+									<option th:value="${con.id}">[[${con.name}]]</option>
+								</th:block>
+							</select>
+						</div>
+						<div class="col-md-6 form-group">
+							<label>City</label> <input class="form-control" type="text"
+								maxlength="45" minlength="2" th:field="*{city}"
+								placeholder="New York">
+						</div>
+						<div class="col-md-6 form-group">
+							<label>State/Province:</label> <select class="custom-select" 
+								th:field="*{state}">
+									<th:block th:each="state :${listState}">
+										<option th:value="${state.name}">[[${state.name}]]</option>
+									</th:block>>
+								</select>
+						</div>
+						<div class="col-md-6 form-group">
+							<label>ZIP Code</label> <input class="form-control"
+								maxlength="10" minlength="2" th:field="*{postalCode}"
+								type="text" placeholder="2011">
+						</div>
+
+					</div>
+				<button type="submit" class="btn btn-primary btn-user btn-block">
+					Save</button>
+				</form>
+			</div>
+
+
+
+
+		</div>
+	</div>
+	
+	<th:block th:each="state :${listState}">
+		<input name="nameStates" type="hidden" th:value="${state.name}">
+		<input name="parentId" type="hidden" th:value="${state.country.id}">
+		<input name="statesId" type="hidden" th:value="${state.id}">
+	</th:block>
+	
+	<input type="hidden" id="stateHidden" th:value="${customer.state}">
+
+	<div th:replace="fragments :: footer"></div>
+
+	<!-- Back to Top -->
+	<a href="#" class="btn btn-primary back-to-top"><i
+		class="fa fa-angle-double-up"></i></a>
+
+	<script type="text/javascript">
+	$(document)
+	.ready(
+			function() {
+				
+				nameStatesBycontry = [];
+				statesId = [];
+
+				$("input[name=nameStates]").each(function() {
+					nameStatesBycontry.push($(this).val());
+				});
+
+				$("input[name=statesId]").each(function() {
+					statesId.push($(this).val());
+				});
+				conceptName = $('#country').find(":selected").val();
+				stateHidden = $('#stateHidden').val();
+				
+
+				$('#country')
+						.change(
+								function() {
+									con = $(this);
+									if (con.val() == 0) {
+										$('#state').empty();
+										return;
+									}
+									html = "";
+									countStateByCountry = 0;
+									$("input[name=parentId]")
+											.each(
+													function(index) {
+														state = $(this);
+														if (con.val() == state.val()) {
+															html += `<option value="${nameStatesBycontry[index]}">${nameStatesBycontry[index]}</option>`;
+															$(
+																	'#state')
+																	.html(
+																			html);
+															countStateByCountry++;
+														}
+													});
+									if (countStateByCountry == 0) {
+										$('#state').empty();
+									}
+								});
+			})
+	</script>
+	<script type="text/javascript" th:src="@{/js/main.js}"></script>
+
+
+</body>
+</html>

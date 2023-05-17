@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html>
+<head th:replace="fragments :: page_header('Shope', 'none')"></head>
+<body class="bg-gradient-primary">
+	<div class="container">
+		<div class="card o-hidden border-0 shadow-lg my-3">
+			<div class="card-body p-0">
+				<!-- Nested Row within Card Body -->
+				<div class="row">
+					<div class="col-lg-5 d-none d-lg-block bg-register-image"
+						th:style="'background: url('+@{/images/logo_register.png}+');
+                    		    background-size: cover; background-position: center;'">
+
+					</div>
+					<div class="col-lg-7">
+						<div class="p-5"
+							style="padding-bottom: 2px !important; padding-top: 3px !important;">
+							<div class="text-center">
+								<h1 class="h4 text-gray-900 mb-4">Create an Account!</h1>
+							</div>
+							<form class="user" th:action="@{/customers/register}"
+								method="post" th:object="${customer}">
+
+								<input type="hidden" th:field="*{id}">
+								<div class="row">
+									<div class="col-md-6 form-group">
+										<label>First Name</label> <input class="form-control"
+											required="required" maxlength="45" minlength="2" type="text"
+											th:field="*{firstName}" placeholder="John">
+									</div>
+									<div class="col-md-6 form-group">
+										<label>Last Name</label> <input class="form-control"
+											required="required" maxlength="45" minlength="2" type="text"
+											placeholder="Doe" th:field="*{lastName}">
+									</div>
+									<div class="col-md-6 form-group">
+										<label>E-mail</label> <input class="form-control" type="email"
+											required="required" maxlength="45" minlength="8"
+											th:field="*{email}" placeholder="example@email.com">
+									</div>
+									<div class="col-md-6 form-group">
+										<label>Mobile No</label> <input class="form-control"
+											required="required" maxlength="15" minlength="8"
+											th:field="*{phoneNumber}" type="tel"
+											placeholder="+123 456 789">
+									</div>
+
+									<div class="col-md-6 form-group">
+										<label>Password</label> <input class="form-control"
+											required="required" maxlength="15" minlength="6"
+											th:field="*{password}" type="password" placeholder="Password"
+											oninput="checkPasswordMatch(document.getElementById('confirmPassword'))">
+									</div>
+
+									<div class="col-md-6 form-group">
+										<label>Re-type Password:</label> <input class="form-control"
+											required="required" maxlength="15" minlength="6"
+											id="confirmPassword" type="password" placeholder="Password"
+											oninput="checkPasswordMatch(this)">
+									</div>
+
+									<div class="col-md-6 form-group">
+										<label>Address Line 1</label> <input class="form-control"
+											required="required" maxlength="64" minlength="3"
+											th:field="*{addressLine1}" type="text"
+											placeholder="123 Street">
+									</div>
+
+									<div class="col-md-6 form-group">
+										<label>Address Line 2</label> <input class="form-control"
+											maxlength="64" minlength="3" th:field="*{addressLine2}"
+											type="text" placeholder="123 Street">
+									</div>
+
+									<div class="col-md-6 form-group">
+										<label>Country</label> <select class="custom-select"
+											th:field="*{country}">
+											<option value="0">Choose Country</option>
+											<th:block th:each="con : ${listCountry}">
+												<option th:value="${con.id}">[[${con.name}]]</option>
+											</th:block>
+										</select>
+									</div>
+									<div class="col-md-6 form-group">
+										<label>City</label> <input class="form-control" type="text"
+											maxlength="45" minlength="2" th:field="*{city}"
+											placeholder="New York">
+									</div>
+									<div class="col-md-6 form-group">
+										<label>State/Province:</label> <select class="custom-select"
+											th:field="*{state}"></select>
+									</div>
+									<div class="col-md-6 form-group">
+										<label>ZIP Code</label> <input class="form-control"
+											maxlength="10" minlength="2" th:field="*{postalCode}"
+											type="text" placeholder="2011">
+									</div>
+
+								</div>
+						</div>
+
+						<button type="submit" class="btn btn-primary btn-user btn-block">
+							Register Account</button>
+						<div class="row" style="justify-content: space-around;">
+							<a th:href="@{/oauth2/authorization/google}" class="btn btn-google btn-user"> <i
+								class="fab fa-google fa-fw"></i> Register with Google
+							</a> <a href="index.html" class="btn btn-facebook btn-user"> <i
+								class="fab fa-facebook-f fa-fw"></i> Register with Facebook
+							</a>
+						</div>
+
+						</form>
+						<hr>
+						<div class="text-center">
+							<a class="small" href="forgot-password.html">Forgot Password?</a>
+						</div>
+						<div class="text-center">
+							<a class="small" href="login.html">Already have an account?
+								Login!</a>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	<div th:replace="modal_fragments :: modal_dialog"></div>
+
+	<th:block th:each="state :${listState}">
+		<input name="nameStates" type="hidden" th:value="${state.name}">
+		<input name="parentId" type="hidden" th:value="${state.country.id}">
+		<input name="statesId" type="hidden" th:value="${state.id}">
+	</th:block>
+	<input type="hidden" id="unique_email" th:value="${unique_email}">
+	<input type="hidden" id="stateHidden" th:value="${customer.state}">
+	<script type="text/javascript" th:src="@{/js/common_customer_form.js}"></script>
+	<script type="text/javascript">
+		$(document)
+				.ready(
+						function() {
+							messUniqueEmail = $('#unique_email').val();
+							if (messUniqueEmail !== ''){
+								$('#modalTitle').text('Error')
+								$('#contentModelWarning').text('There is another user having the email')
+								$('#modalDialog').modal('show');
+								$('#unique_email').val('');
+							}
+							nameStatesBycontry = [];
+							statesId = [];
+
+							$("input[name=nameStates]").each(function() {
+								nameStatesBycontry.push($(this).val());
+							});
+
+							$("input[name=statesId]").each(function() {
+								statesId.push($(this).val());
+							});
+							
+							conceptName = $('#country').find(":selected").val();
+							if (conceptName != 0){
+								html = "";
+								countStateByCountry = 0;
+								$("input[name=parentId]")
+										.each(
+												function(index) {
+													state = $(this);
+													if (conceptName == state.val()) {
+														selectedState = stateHidden ==  nameStatesBycontry[index];
+														html += `<option selected="${selectedState}" value="${nameStatesBycontry[index]}">${nameStatesBycontry[index]}</option>`;
+														$(
+																'#state')
+																.html(
+																		html);
+														countStateByCountry++;
+													}
+												});
+							}
+
+							$('#country')
+									.change(
+											function() {
+												con = $(this);
+												if (con.val() == 0) {
+													$('#state').empty();
+													return;
+												}
+												html = "";
+												countStateByCountry = 0;
+												$("input[name=parentId]")
+														.each(
+																function(index) {
+																	state = $(this);
+																	if (con
+																			.val() == state
+																			.val()) {
+																		html += `<option value="${nameStatesBycontry[index]}">${nameStatesBycontry[index]}</option>`;
+																		$(
+																				'#state')
+																				.html(
+																						html);
+																		countStateByCountry++;
+																	}
+																});
+												if (countStateByCountry == 0) {
+													$('#state').empty();
+												}
+											});
+						})
+
+		function checkPasswordMatch(confirmPassword) {
+			if (confirmPassword.value != $("#password").val()) {
+				confirmPassword.setCustomValidity("Passwords do not match!");
+			} else {
+				confirmPassword.setCustomValidity("");
+			}
+		}
+	</script>
+
+	<script type="text/javascript" th:src="@{/js/main.js}"></script>
+
+</body>
+</html>

@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html>
+<header
+	th:replace="fragments :: page_header('Categories - Shopme Admin Control Panel', 'none')"></header>
+<body id="page-top">
+	<div id="wrapper" class="container-fuild">
+		<nav th:replace="nav :: menu"></nav>
+
+		<div id="content-wrapper" class="d-flex flex-column">
+			<div id="content">
+				<nav th:replace="nav :: header_customrer"></nav>
+
+				<div class="container-fluid">
+
+					<h1 class="h3 mb-2 text-gray-800">Quản lý tỷ lệ vận chuyển</h1>
+
+					<div th:if="${message != null}"
+						class="alert alert-success text-center" th:text="${message}"></div>
+
+					<div class="card shadow mb-4">
+						<div class="card-header py-3">
+							<h6 class="m-0 font-weight-bold text-primary">Dữ liệu</h6>
+						</div>
+
+						<div class="card-body">
+
+							<div class="row">
+								<div class="col-6">
+									<a th:href="@{/shipping_reates/new}" style="font-size: 25px;"><i
+										class="fa-solid fa-user-plus icon-gray"></i></a>
+								</div>
+								<div class="col-6">
+									<div th:replace="fragments :: search_form('/shipping_reates')"></div>
+								</div>
+							</div>
+							<div class="table-responsive">
+								<table id="dataTable" class="table table-bordered" width="100%"
+									cellspacing="0">
+									<thead>
+										<tr>
+											<th>ID</th>
+											<th>Quốc gia</th>
+											<th>Bang/Tỉnh</th>
+											<th>Tỷ lệ</th>
+											<th>Ngày đến</th>
+											<th>Giao hàng nhận tiền</th>
+											<th></th>
+										</tr>
+									</thead>
+
+									<tbody>
+										<tr th:each="sr : ${listShippingRate}">
+											<td>[[${sr.id}]]</td>
+											<td>[[${sr.country.name}]]</td>
+											<td>[[${sr.state.name}]]</td>
+											<td>[[${sr.rate}]]</td>
+											<td>[[${sr.days}]]</td>
+											<div
+												th:replace="fragments :: statusShipping(${sr.codSupported}, '/shipping_rates/' + ${sr.id}, 'shipping rate')"></div>
+											<td class="text-center">
+												<div class="d-flexs">
+													<a th:href="@{'/shipping_reates/edit/' + ${sr.id}}"
+														title="update" class=""><i
+														class="fa-solid fa-pen-to-square icon-gray"></i></a> &nbsp; <a
+														th:href="@{'/shipping_reates/delete/' + ${sr.id}}"
+														class="link-delete" th:userId="${sr.id}"
+														th:lastNameUser="${sr.id}"><i
+														class="fa-solid fa-trash icon-gray"></i></a>
+												</div>
+											</td>
+
+										</tr>
+									</tbody>
+								</table>
+							</div>
+							<div th:replace="fragments :: pagination('/shipping_reates', 'shipping_reates')"></div>
+						</div>
+					</div>
+
+
+				</div>
+
+				<div class="modal fade" id="comfirmModal" tabindex="-1"
+					role="dialog">
+					<div class="modal-dialog" role="document">
+						<div class="modal-content">
+							<div class="modal-header">
+								<h5 class="modal-title" id="modalTitle">Delete Comfirmation</h5>
+								<button type="button" class="close" data-dismiss="modal"
+									aria-label="Close">
+									<span aria-hidden="true">&times;</span>
+								</button>
+							</div>
+							<div class="modal-body">
+								<p id="contentComfirmModal"></p>
+							</div>
+							<div class="modal-footer">
+								<a href="" class="btn btn-success" id="yesButton">Yes</a>
+
+								<button type="button" class="btn btn-danger"
+									data-dismiss="modal">No</button>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<footer th:replace="fragments :: footer"></footer>
+		</div>
+	</div>
+
+	<script type="text/javascript">
+		$(document).ready(
+				function() {
+					$(".link-delete")
+							.on(
+									"click",
+									function(e) {
+										e.preventDefault();
+
+										link = $(this);
+
+										userId = link.attr("userId");
+										lastNameUser = link
+												.attr("lastNameUser");
+
+										$("#yesButton").attr("href",
+												link.attr("href"));
+
+										$("#contentComfirmModal").text(
+												"Are you sure you want to delete this brand "
+														+ userId + ": "
+														+ lastNameUser + "?");
+										$("#comfirmModal").modal();
+									});
+				});
+
+		function resetForm(id) {
+			window.location = "[[@{/users}]]";
+		}
+	</script>
+</body>
+</html>

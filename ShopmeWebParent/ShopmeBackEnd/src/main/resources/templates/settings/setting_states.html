@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<body>
+	<div th:fragment="content" remove="tag">
+		<div class="container-fluid" style="min-height: 500px">
+			<div class="form-group">
+				<label for="exampleFormControlSelect2">Example multiple
+					select</label> <select class="form-control" id="contriesState">
+					<option value="0">Choose Country</option>
+					<th:block th:each="con :${listCountries}">
+						<option th:value="${con.id}">[[${con.name}]]</option>
+					</th:block>
+				</select>
+			</div>
+
+			<th:block th:each="state :${listStates}">
+				<input name="nameStates" type="hidden" th:value="${state.name}">
+				<input name="statesId" type="hidden" th:value="${state.country.id}">
+			</th:block>
+
+			<div class="form-group">
+				<label for="states">States</label> <select multiple class="form-control"
+					id="states">
+				</select>
+			</div>
+
+		</div>
+	</div>
+</body>
+</html>

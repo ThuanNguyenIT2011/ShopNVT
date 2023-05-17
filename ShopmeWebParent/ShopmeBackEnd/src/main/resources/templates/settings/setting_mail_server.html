@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+<body>
+	<div th:fragment="content" remove="tag">
+		<form class="container-fuild mt-1"
+			th:action="@{/settings/save_mailserver}" method="post">
+			<div class="form-group row">
+				<label for="name" class="col-sm-2 col-form-label">SMTP
+					Server Host Name:</label>
+				<div class="col-sm-10">
+					<input type="text" class="form-control" name="MAIL_HOST"
+						th:value="${MAIL_HOST}" required="required" minlength="3"
+						maxlength="256">
+				</div>
+			</div>
+
+			<div class="form-group row">
+				<label for="name" class="col-sm-2 col-form-label">PORT
+					NUMBER:</label>
+				<div class="col-sm-10">
+					<input type="text" class="form-control" name="MAIL_PORT"
+						th:value="${MAIL_PORT}" required="required" minlength="3"
+						maxlength="256">
+				</div>
+			</div>
+
+			<div class="form-group row">
+				<label for="name" class="col-sm-2 col-form-label">UserName:</label>
+				<div class="col-sm-10">
+					<input type="text" class="form-control" name="MAIL_USERNAME"
+						th:value="${MAIL_USERNAME}" required="required" minlength="3"
+						maxlength="256">
+				</div>
+			</div>
+
+			<div class="form-group row">
+				<label for="name" class="col-sm-2 col-form-label">Password:</label>
+				<div class="col-sm-10">
+					<input type="text" class="form-control" name="MAIL_PASSWORD"
+						th:value="${MAIL_PASSWORD}" required="required" minlength="3"
+						maxlength="256">
+				</div>
+			</div>
+
+			<div class="form-group row">
+				<label for="name" class="col-sm-2 col-form-label">Server
+					Authentication Required:</label>
+					<div class="col-sm-2">
+						<select class="form-control" name="SMTP_AUTH">
+							<option th:selected="${SMTP_AUTH=='true'}" value="true">true</option>
+							<option th:selected="${SMTP_AUTH=='false'}" value="false">false</option>
+						</select>
+					</div>
+					
+			</div>
+
+			<div class="form-group row">
+				<label for="name" class="col-sm-2 col-form-label">Server
+					Required Secured Connection (TLS):</label>
+				<div class="col-sm-2">
+						<select class="form-control" name="SMTP_SECURED">
+							<option th:selected="${SMTP_SECURED=='true'}" value="true">true</option>
+							<option th:selected="${SMTP_SECURED=='false'}" value="false">false</option>
+						</select>
+					</div>
+			</div>
+
+			<div class="form-group row">
+				<label for="name" class="col-sm-2 col-form-label">From Email
+					Address:</label>
+				<div class="col-sm-10">
+					<input type="text" class="form-control" name="MAIL_FROM"
+						th:value="${MAIL_FROM}" required="required" minlength="3"
+						maxlength="256">
+				</div>
+			</div>
+
+			<div class="form-group row">
+				<label for="name" class="col-sm-2 col-form-label">Sender
+					Name:</label>
+				<div class="col-sm-10">
+					<input type="text" class="form-control" name="MAIL_SENDER_NAME"
+						th:value="${MAIL_SENDER_NAME}" required="required" minlength="3"
+						maxlength="256">
+				</div>
+			</div>
+
+			<div class="text-center">
+				<input type="submit" class="btn btn-primary m-3" value="Save">
+				<input type="button" class="btn btn-secondary" value="Cancels"
+					id="buttonCancel">
+			</div>
+		</form>
+	</div>
+</body>
+</html>

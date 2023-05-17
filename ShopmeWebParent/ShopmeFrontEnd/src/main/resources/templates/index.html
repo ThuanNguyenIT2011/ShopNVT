@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head th:replace="fragments :: page_header('Shope', 'none')"></head>
+<body>
+	<div th:replace="fragments :: header"></div>
+	<div th:replace="navbar :: navbar"></div>
+
+    <div th:replace="fragments :: featured"></div>
+
+    <!-- Categories Start -->
+    <div class="container-fluid pt-5">
+        <h2 class="section-title position-relative text-uppercase mx-xl-5 mb-4"><span class="bg-secondary pr-3">Categories</span></h2>
+        <div class="row px-xl-5 pb-3">
+        	<th:block th:each="cat : ${listCategories}">
+	            <div class="col-lg-3 col-md-4 col-sm-6 pb-1">
+	                <a class="text-decoration-none" 
+	                	th:href="@{'/cat/'+${cat.alias}}">
+	                    <div class="cat-item d-flex align-items-center mb-4">
+	                        <div class="overflow-hidden" style="width: 100px; height: 100px;">
+	                            <img style="height: 100%;" class="img-fluid" th:src="@{${cat.imagePath}}" alt="">
+	                        </div>
+	                        <div class="flex-fill pl-3">
+	                            <h6>[[${cat.name}]]</h6>
+	                            <!--<small class="text-body">100 Products</small>-->
+	                        </div>
+	                    </div>
+	                </a>
+	            </div>
+            </th:block>
+        </div>
+    </div>
+    <!-- Categories End -->
+	
+	<div th:replace="fragments :: footer"></div>
+
+    <!-- Back to Top -->
+    <a href="#" class="btn btn-primary back-to-top"><i class="fa fa-angle-double-up"></i></a>
+
+	<script type="text/javascript" th:src="@{/js/main.js}"></script>
+
+	
+
+	
+</body>
+</html>

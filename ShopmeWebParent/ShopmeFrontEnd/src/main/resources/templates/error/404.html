@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head th:replace="fragments :: page_header('Shope', 'none')"></head>
+<body>
+	<div th:replace="fragments :: header"></div>
+	<div th:replace="navbar :: navbar"></div>
+
+
+	<!-- Begin Page Content -->
+	<div class="container-fluid" style="min-height: 300px">
+		<!-- 404 Error Text -->
+		<div class="text-center">
+			<div class="error mx-auto" data-text="404">404</div>
+			<p class="lead text-gray-800 mb-5">Page Not Found</p>
+			<p class="text-gray-500 mb-0">It looks like you found a glitch in
+				the matrix...</p>
+			<a th:href="@{/}">&larr; Back to Dashboard</a>
+		</div>
+	</div>
+
+	<div th:replace="fragments :: footer"></div>
+
+	<!-- Back to Top -->
+	<a href="#" class="btn btn-primary back-to-top"><i
+		class="fa fa-angle-double-up"></i></a>
+
+	<script type="text/javascript" th:src="@{/js/main.js}"></script>
+
+
+
+
+</body>
+</html>

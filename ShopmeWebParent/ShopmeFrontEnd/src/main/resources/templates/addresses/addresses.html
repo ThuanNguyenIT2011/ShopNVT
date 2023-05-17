@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html>
+<head th:replace="fragments :: page_header('Shope', 'none')"></head>
+<body>
+	<div th:replace="fragments :: header"></div>
+	<div th:replace="navbar :: navbar"></div>
+
+	<div class="container">
+		<div class="row">
+			<div class="col-2">
+				<div th:replace="fragments :: navManagementAccount"></div>
+			</div>
+
+			<div class="col-10">
+				<h2>Quản lý địa chỉ</h2>
+
+				<div>
+					<a th:href="@{/addresses/new}" class="" type="button"
+						style="color: #fff; background-color: #1a9cb7; padding: '10px'; border-color: #1a9cb7;">Thêm
+						địa chỉ mới
+						</button>
+					</a>
+
+					<div class="dashboard " data-spm="1">
+						<div class="dashboard-profile mb-2 " 
+							th:style="${defaultAddress ? 'height: 210px; background: #FAFAD2;' : 'height: 210px;'}">
+							<div class="dashboard-mod-title">
+								Địa chỉ &nbsp <a data-spm="dprofile_edit"
+									th:href="@{/addresses/default/0}">Mặt định</a>
+							</div>
+							<div class="dashboard-info"
+								data-spm-anchor-id="a2o4n.manage_account.1.i0.44216e88IacI7o">
+
+								<div class="dashboard-info-item">Họ và tên:
+									[[${customer.fullName}]]</div>
+								<div class="dashboard-info-item">Số điện thoại:
+									[[${customer.phoneNumber}]]</div>
+								<div class="dashboard-info-item">
+									[[${customer.addressLine1}]] <span
+										th:if="${customer.addressLine2 != null && customer.addressLine2!=''}">([[${customer.addressLine2}]])</span>,
+									[[${customer.state}]], <span
+										th:if="${customer.city != null && customer.city!=''}">
+										Thành phố [[${customer.city}]],</span> [[${customer.country.name}]]
+								</div>
+							</div>
+						</div>
+
+					</div>
+
+					<th:block th:each="address : ${listAddresses}">
+						<div class="dashboard" data-spm="1">
+							<div class="dashboard-profile mb-2"
+								th:style="${address.defaultAddress ? 'height: 210px; background: #FAFAD2;' : 'height: 210px;'}">
+								<div class="dashboard-mod-title">
+									Địa chỉ &nbsp<a data-spm="dprofile_edit"
+										th:href="@{'/addresses/edit/' + ${address.id}}">Chỉnh sửa</a><span>|</span>
+									<a data-spm="dprofile_edit"
+										th:href="@{'/addresses/delete/' + ${address.id}}">Xóa</a> <span>|</span>
+									<a th:if="${address.defaultAddress == false}" data-spm="dprofile_edit"
+										th:href="@{'/addresses/default/' + ${address.id}}">Mặt
+										định</a>
+								</div>
+								<div class="dashboard-info"
+									data-spm-anchor-id="a2o4n.manage_account.1.i0.44216e88IacI7o">
+
+									<div class="dashboard-info-item">Họ và tên:
+										[[${address.fullName}]]</div>
+									<div class="dashboard-info-item">Số điện thoại:
+										[[${address.phoneNumber}]]</div>
+									<div class="dashboard-info-item">
+										[[${address.addressLine1}]] <span
+											th:if="${address.addressLine2 != null && address.addressLine2!=''}">([[${address.addressLine2}]])</span>,
+										[[${address.state.name}]], <span
+											th:if="${address.city != null && address.city!=''}">
+											Thành phố [[${address.city}]]</span>, [[${address.country.name}]]
+									</div>
+								</div>
+							</div>
+
+						</div>
+
+					</th:block>
+
+
+				</div>
+			</div>
+		</div>
+
+	</div>
+
+	<div th:replace="fragments :: footer"></div>
+
+	<th:block th:if="${message != null}">
+		<input type="hidden" id="message" th:value="${message}">
+	</th:block>
+	<th:block th:unless="${message != null}">
+		<input type="hidden" id="message" th:value="${message}">
+	</th:block>
+
+	<div class="position-fixed bottom-0 right-0 p-3"
+		style="z-index: 5; right: 0; bottom: 0;">
+		<div id="liveToast" class="toast hide" role="alert"
+			aria-live="assertive" aria-atomic="true" data-delay="2000">
+			<div class="toast-header">
+				<strong class="mr-auto">Thông báo</strong> <small>1s</small>
+				<button type="button" class="ml-2 mb-1 close" data-dismiss="toast"
+					aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="toast-body" th:if="${message != null}">[[${message}]]
+			</div>
+		</div>
+	</div>
+
+	<!-- Back to Top -->
+	<a href="#" class="btn btn-primary back-to-top"><i
+		class="fa fa-angle-double-up"></i></a>
+
+	<script type="text/javascript" th:src="@{/js/main.js}"></script>
+
+	<script type="text/javascript">
+		$(document).ready(function() {
+			message = $('#message').val();
+			if (message !== '') {
+				$('#liveToast').toast('show')
+			}
+		})
+	</script>
+
+
+</body>
+</html>

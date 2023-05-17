@@ -1,0 +1,30 @@
+package com.shopme.address;
+
+import java.util.List;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.stereotype.Repository;
+
+import com.shopme.common.entity.Address;
+import com.shopme.common.entity.Customer;
+import com.shopme.common.entity.State;
+
+@Repository
+public interface AddressRepository extends JpaRepository<Address, Integer>{
+	public List<Address> findByCustomer(Customer customer);
+	
+	@Query("SELECT a FROM Address a WHERE a.customer.id = ?1 AND a.state.id = ?2")
+	public Address findByCustomerAndState(Integer customerID, Integer stateID);
+	
+	
+	@Query("UPDATE Address a SET a.defaultAddress = true WHERE a.id = ?1")
+	@Modifying
+	public void setDefaultAddress(Integer id);
+	
+	@Query("UPDATE Address a SET a.defaultAddress = false "
+			+ "WHERE a.id != ?1 AND a.customer.id = ?2")
+	@Modifying
+	public void setNonDefaultForOthers(Integer defaultAddressId, Integer customerId);
+}

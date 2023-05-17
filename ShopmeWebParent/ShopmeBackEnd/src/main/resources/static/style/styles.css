@@ -1,0 +1,76 @@
+@charset "ISO-8859-1";
+
+*.icon-silver {
+	color: silver;
+}
+
+*.icon-green {
+	color: #04AA6D;
+}
+
+*.icon-gray {
+	color: gray;
+}
+
+.table-user tbody tr td:last-of-type a{
+	color: black;
+	font-size: 20px;
+	transition: .2s;
+}
+
+.table-user tbody tr td:last-of-type a:hover i{
+	color: #04AA6D;
+}
+
+.custom-a, .custom-a:hover {
+	text-decoration: none;
+    color: #858796;
+}
+#dataTable tr{
+	color: #858796;
+}
+
+@media screen and (max-width: 768px) {
+	/* small screen */
+	div.full-details{
+		display: none;
+	}
+	
+	div.less-details{
+		display: block;
+	}
+}
+
+@media screen and (min-width: 768px) and (max-width: 1024px) {
+	/* medium screen */
+	div.full-details{
+		display: block;
+	}
+	
+	div.less-details{
+		display: none;
+	}
+	
+	.hideable-column {
+		display: none;
+	}
+}
+
+@media screen and (min-width: 1024px) {
+	/*  */
+	
+	div.less-details{
+		display: none;
+	}
+	
+	th, td.hideable-column {
+		display: table-cell;
+	}
+}
+
+
+
+
+
+
+
