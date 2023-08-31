@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.apache.tomcat.util.http.fileupload.FileUpload;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Controller;
@@ -88,7 +89,7 @@ public class CategoryController {
 		List<Category> listCategoriesUsedInForm = service.listCategoriesUsedInForm(sortDir);
 		
 		model.addAttribute("category", category);
-		model.addAttribute("pageTitle", "Create New Category");
+		model.addAttribute("pageTitle", "Tạo danh mục sản phẩm mới");
 		model.addAttribute("listCategories", listCategoriesUsedInForm);
 		return "/categories/category_form";
 	}
@@ -96,7 +97,21 @@ public class CategoryController {
 	@PostMapping("/categories/save")
 	public String saveCategory(Category category,
 			@RequestParam(name = "fileImage") MultipartFile multipartFile,
-			RedirectAttributes redirectAttributes) throws IOException {
+			RedirectAttributes redirectAttributes, Model model) throws IOException {
+		String isUniqueName  = service.checkUnique(category.getId(), category.getName(), category.getAlias());
+		if (!isUniqueName.equals("OK")) {
+			String sortDir = "asc";
+			List<Category> listCategoriesUsedInForm = service.listCategoriesUsedInForm(sortDir);
+			
+			model.addAttribute("category", category);
+			model.addAttribute("pageTitle", "Tạo danh mục sản phẩm mới");
+			model.addAttribute("listCategories", listCategoriesUsedInForm);
+			
+			model.addAttribute("error_name", "error");
+			
+			return "/categories/category_form";
+		}
+		
 		if (!multipartFile.isEmpty()) {
 			String fileName = StringUtils.cleanPath(multipartFile.getOriginalFilename());
 			category.setImage(fileName);
@@ -108,7 +123,7 @@ public class CategoryController {
 		} else {
 			service.save(category);
 		}
-		redirectAttributes.addFlashAttribute("message", "The category has been saved successfully");
+		redirectAttributes.addFlashAttribute("message", "Danh mục được lưu thành công");
 		
 		return "redirect:/categories";
 	}
@@ -125,7 +140,7 @@ public class CategoryController {
 	
 			model.addAttribute("category", category);
 			model.addAttribute("listCategories", listCategoriesUsedInForm);
-			model.addAttribute("pageTitle", "Edit category By Id(" + id + ")");
+			model.addAttribute("pageTitle", "Chỉnh sửa danh mục Id(" + id + ")");
 			
 			return "/categories/category_form";
 		} catch (CategoryNotFoundException e) {
@@ -140,7 +155,7 @@ public class CategoryController {
 		try {
 			service.editSatatus(id, status);
 			String strStatus = status?"Enabled":"Disabled";
-			redirectAttributes.addFlashAttribute("message", "The category id " + id + " has been " + strStatus);
+			redirectAttributes.addFlashAttribute("message", "Danh mục " + id + " đã được " + strStatus);
 		} catch (CategoryNotFoundException e) {
 			redirectAttributes.addFlashAttribute("message", e.getMessage());
 		}
@@ -154,9 +169,11 @@ public class CategoryController {
 			service.deleteCategoryById(id);
 			String strDir = "../category-images/"+id;
 			FileUploadUtil.removeDir(strDir);
-			redirectAttributes.addFlashAttribute("message", "The category id " + id + " has been deleted successfully");
+			redirectAttributes.addFlashAttribute("message", "Danh mục id " + id + " đã được xóa thành công");
 		} catch (CategoryNotFoundException e) {
 			redirectAttributes.addFlashAttribute("message", e.getMessage());
+		} catch (DataIntegrityViolationException ex) {
+			redirectAttributes.addFlashAttribute("message", "Danh mục id " + id + " không thể xóa");
 		}
 		return "redirect:/categories";
 	}

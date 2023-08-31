@@ -16,7 +16,7 @@ import jakarta.transaction.Transactional;
 @Service
 @Transactional
 public class BrandService {
-	public static final int BRAND_PER_PAGE = 2;
+	public static final int BRAND_PER_PAGE = 4;
 	
 	@Autowired
 	private BrandRepository brandRepo;
@@ -47,14 +47,14 @@ public class BrandService {
 		try {
 			return brandRepo.findById(id).get();
 		} catch (Exception e) {
-			throw new BrandNotFoundException("Could not find any brand with ID " + id);
+			throw new BrandNotFoundException("Không thể xóa nhãn hiệu ID " + id);
 		}
 	}
 	
 	public void delete(Integer id) throws BrandNotFoundException {
 		Long count = brandRepo.countById(id);
 		if (count == null || count == 0) {
-			throw new BrandNotFoundException("Could not find any brand with ID " + id);
+			throw new BrandNotFoundException("Không thể xóa nhãn hiệu ID " + id);
 		} else {
 			brandRepo.deleteById(id);
 		}

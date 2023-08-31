@@ -40,9 +40,9 @@ public class Address {
 	@Column(length = 10, nullable = false)
 	private String postalCode;
 	
-	@ManyToOne
-	@JoinColumn(name = "country_id")
-	private Country country;
+//	@ManyToOne
+//	@JoinColumn(name = "country_id")
+//	private Country country;
 	
 	@ManyToOne
 	@JoinColumn(name = "state_id")
@@ -58,15 +58,27 @@ public class Address {
 
 	@Override
 	public String toString() {
-		return "Address [id=" + id + ", firstName=" + firstName + ", lastName=" + lastName + ", phoneNumber="
-				+ phoneNumber + ", addressLine1=" + addressLine1 + ", addressLine2=" + addressLine2 + ", city=" + city
-				+ ", defaultAddress=" + defaultAddress + ", postalCode=" + postalCode +", postalCode=" + state.getId() + "]";
+		String strAddress = "";
+		if (addressLine1 != null)
+			strAddress += addressLine1;
+		
+		if (addressLine2 != null || addressLine2.length() >= 0)
+			strAddress += '(' + addressLine1 + ')';
+		
+		strAddress += ' ' + state.getName();
+		
+		if (city != null || city.length() >= 0)
+			strAddress += ", TP." + city ;
+		
+		strAddress += ' ' + state.getCountry().getName();
+		
+		return strAddress;
 	}
 
 
 
 	public Address(String firstName, String lastName, String phoneNumber, String addressLine1, String addressLine2,
-			String city, boolean defaultAddress, Country country, State state, Customer customer,
+			String city, boolean defaultAddress, State state, Customer customer,
 			String postalCode) {
 		this.firstName = firstName;
 		this.lastName = lastName;
@@ -75,7 +87,6 @@ public class Address {
 		this.addressLine2 = addressLine2;
 		this.city = city;
 		this.defaultAddress = defaultAddress;
-		this.country = country;
 		this.state = state;
 		this.customer = customer;
 		this.postalCode = postalCode;
@@ -129,13 +140,6 @@ public class Address {
 		this.city = city;
 	}
 
-	public Country getCountry() {
-		return country;
-	}
-
-	public void setCountry(Country country) {
-		this.country = country;
-	}
 
 	public State getState() {
 		return state;

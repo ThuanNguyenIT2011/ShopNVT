@@ -83,14 +83,28 @@ public class UserController {
 		user.setEnabled(true);
 		model.addAttribute("user", user);
 
-		String pageTitle = "Create New User";
+		String pageTitle = "Tạo nhân viên";
 		model.addAttribute("pageTitle", pageTitle);
 		return "/users/user_form";
 	}
 
 	@PostMapping("/users/save")
 	public String saveUser(User user, RedirectAttributes redirectAttributes,
-			@RequestParam("image") MultipartFile multipartFile) throws IOException {
+			@RequestParam("image") MultipartFile multipartFile, Model model) throws IOException {
+		boolean isUnique = service.isEmailUnique(user.getId(), user.getEmail());
+		if (!isUnique) {
+			List<Role> listRoles = service.listRole();
+			model.addAttribute("listRoles", listRoles);
+			model.addAttribute("user", user);
+
+			String pageTitle = "Tạo nhân viên";
+			model.addAttribute("pageTitle", pageTitle);
+			
+			model.addAttribute("error_email", "error");
+			
+			return "/users/user_form";
+		}
+		
 		if (!multipartFile.isEmpty()) {
 			String fileName = StringUtils.cleanPath(multipartFile.getOriginalFilename());
 			user.setPhotos(fileName);
@@ -105,7 +119,7 @@ public class UserController {
 			if (user.getPhotos().isEmpty()) user.setPhotos(null);
 			service.save(user);
 		}
-		redirectAttributes.addFlashAttribute("message", "The user has been saved successfully");
+		redirectAttributes.addFlashAttribute("message", "Lưu nhân viên thành công");
 		return gerRedirectURLtoAffectedUser(user);
 	}
 
@@ -124,14 +138,14 @@ public class UserController {
 			User user = service.get(id);
 			model.addAttribute("user", user);
 
-			String pageTitle = "Edit User (ID " + user.getId() + ") New User";
+			String pageTitle = "Chỉnh sửa (ID " + user.getId() + ") nhân viên";
 			model.addAttribute("pageTitle", pageTitle);
 
 			return "/users/user_form";
 
 		} catch (UserNotException e) {
 			redirectAttributes.addFlashAttribute("message", e.getMessage());
-			return "redirect:/users/users";
+			return "redirect:/users";
 		}
 
 	}
@@ -140,11 +154,11 @@ public class UserController {
 	public String deleteUser(@PathVariable(name = "id") Integer id, RedirectAttributes redirectAttributes) {
 		try {
 			service.delete(id);
-			redirectAttributes.addFlashAttribute("message", "The user id " + id + " has been deleted successfully");
+			redirectAttributes.addFlashAttribute("message", "Nhân viên id " + id + " đã xóa thành công");
 		} catch (UserNotException e) {
 			redirectAttributes.addFlashAttribute("message", e.getMessage());
 		}
-		return "redirect:/users/users";
+		return "redirect:/users";
 	}
 
 	@GetMapping("/users/{id}/enabled/{status}")
@@ -153,7 +167,7 @@ public class UserController {
 		try {
 			service.updateUserEnabled(id, status);
 			String strStatus = status ? "Enabled" : "Disabled";
-			redirectAttributes.addFlashAttribute("message", "The user id " + id + " has been " + strStatus);
+			redirectAttributes.addFlashAttribute("message", "Nhân viên " + id + "đã được " + strStatus);
 		} catch (UserNotException e) {
 			redirectAttributes.addFlashAttribute("message", e.getMessage());
 		}

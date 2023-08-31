@@ -68,7 +68,7 @@ public class CustomerController {
 		try {
 			customerService.enabled(id, status);
 			String strStatus = status ? "Enabled" : "Disabled";
-			redirectAttributes.addFlashAttribute("message", "The customer id " + id + " has been " + strStatus);
+			redirectAttributes.addFlashAttribute("message", "Khách hàng id " + id + " đã được " + strStatus);
 		} catch (CustomerNotFoundExcetion e) {
 			redirectAttributes.addFlashAttribute("message", e.getMessage());
 		}

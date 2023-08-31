@@ -14,48 +14,13 @@
             <div class="col-10">
                 <h2>Quản lý tài khoản</h2>
 
-                <div class="dashboard" data-spm="1">
-                    <div class="dashboard-profile" style="height: 210px;">
-                        <div class="dashboard-mod-title">Thông tin cá nhân <span>|</span> <a data-spm="dprofile_edit"
-                                th:href="@{/customers/editProfile}">Chỉnh sửa</a></div>
-                        <div class="dashboard-info" data-spm-anchor-id="a2o4n.manage_account.1.i0.44216e88IacI7o">
-                            <div class="dashboard-info-item">0943932775</div>
-                            <div class="dashboard-info-item dashboard-info-item-check">
-                                <div class="dashboard-info-item-check-sub"><label><span
-                                            class="next-checkbox checked "><span class="next-checkbox-inner"><i
-                                                    class="next-icon next-icon-select next-icon-xs"></i></span><input
-                                                type="checkbox" aria-checked="true" value="on"></span><span
-                                            class="next-checkbox-label">Nhận thông tin ưu đãi qua SMS</span></label>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="dashboard-address" style="display: flex; height: 100%;">
-                        <div class="dashboard-address-item shipping">
-                            <div class="dashboard-mod-title">Sổ địa chỉ <span>|</span> <a href="/address#/book"
-                                    data-spm="dprofile_edit">Chỉnh sửa</a></div>
-                            <div class="dashboard-address-default">Địa chỉ nhận hàng mặc định</div>
-                            <div class="dashboard-address-username">Nguyễn Văn Thuận</div>
-                            <div class="dashboard-address-detail">717 30/4</div>
-                            <div class="dashboard-address-detail">Bình Thuận - Huyện Tánh Linh - Xã Bắc Ruộng</div>
-                            <div class="dashboard-address-phone">(+84) 0943932775</div>
-                        </div>
-                        <div class="dashboard-address-item billing">
-                            <div class="dashboard-mod-title">Sổ địa chỉ <span>|</span> <a data-spm="dprofile_edit"
-                                    href="/address#/book">Chỉnh sửa</a></div>
-                            <div class="dashboard-address-default">Địa chỉ thanh toán mặc định</div>
-                            <div class="dashboard-address-username">Nguyễn Văn Thuận</div>
-                            <div class="dashboard-address-detail">717 30/4</div>
-                            <div class="dashboard-address-detail">Bình Thuận - Huyện Tánh Linh - Xã Bắc Ruộng</div>
-                            <div class="dashboard-address-phone">(+84) 0943932775</div>
-                        </div>
-                    </div>
-                </div>
+                
             </div>
         </div>
     </div>
+    
+	<input type="hidden" name="redirect" th:value="${param.redirect}">
 	
-	<div th:replace="fragments :: footer"></div>
 
     <!-- Back to Top -->
     <a href="#" class="btn btn-primary back-to-top"><i class="fa fa-angle-double-up"></i></a>

@@ -145,6 +145,11 @@ public class User {
 		return lastName + " " + firstName;
 	}
 	
-	
+	public boolean hasRole(String roleName) {
+		for (Role role : roles) {
+			if (role.getName().equals(roleName)) return true;
+		}
+		return false;
+	}
 	
 }

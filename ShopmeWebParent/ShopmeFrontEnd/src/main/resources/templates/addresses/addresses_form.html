@@ -13,7 +13,7 @@
 
 			<div class="col-10">
 				<div class="text-center">
-					<h1 class="h4 text-gray-900 mb-4">Edit Profile</h1>
+					<h1 class="h4 text-gray-900 mb-4">Thêm địa chỉ</h1>
 				</div>
 				
 				<div th:if="${message != null}"
@@ -28,37 +28,39 @@
 				
 				<form class="user" th:action="@{/addresses/save}" method="post" th:object="${address}">
 					<input type="hidden" th:field="*{id}">
-					<input type="checkbox" th:field="*{defaultAddress}">
+					<input type="hidden" th:field="*{defaultAddress}">
+					
 					<div class="row">
 						<div class="col-md-6 form-group">
-							<label>First Name</label> <input class="form-control"
+							<label>Tên</label> <input class="form-control"
 								required="required" maxlength="45" minlength="2" type="text"
 								th:field="*{firstName}" placeholder="John">
 						</div>
 						<div class="col-md-6 form-group">
-							<label>Last Name</label> <input class="form-control"
+							<label>Họ</label> <input class="form-control"
 								required="required" maxlength="45" minlength="2" type="text"
 								placeholder="Doe" th:field="*{lastName}">
 						</div>
 						
 						<div class="col-md-6 form-group">
-							<label>Address Line 1</label> <input class="form-control"
+							<label>Địa chỉ 1</label> <input class="form-control"
 								required="required" maxlength="64" minlength="3"
 								th:field="*{addressLine1}" type="text" placeholder="123 Street">
 						</div>
 
 						<div class="col-md-6 form-group">
-							<label>Address Line 2</label> <input class="form-control"
+							<label>Địa chỉ 2</label> <input class="form-control"
 								maxlength="64" minlength="3" th:field="*{addressLine2}"
 								type="text" placeholder="123 Street">
 						</div>
-
 						<div class="col-md-6 form-group">
-							<label>Country</label> <select class="custom-select"
-								th:field="*{country}">
-								<option value="0">Choose Country</option>
+							<label>Quốc gia</label> <select class="custom-select"
+								id="country" name="country">
+								
+								<option value="0">Chọn quốc gia</option>
 								<th:block th:each="con : ${listCountry}">
-									<option th:value="${con.id}">[[${con.name}]]</option>
+									<option th:if="*{id != null}" th:selected="${address.state.country.id == con.id}" th:value="${con.id}">[[${con.name}]]</option>
+									<option th:unless="*{id != null}" th:value="${con.id}">[[${con.name}]]</option>
 								</th:block>
 							</select>
 						</div>
@@ -68,14 +70,14 @@
 								placeholder="New York">
 						</div>
 						<div class="col-md-6 form-group">
-							<label>State/Province:</label> <select class="custom-select" 
+							<label>Bảng/Tỉnh:</label> <select class="custom-select" 
 								th:field="*{state}">
 									
 								</select>
 						</div>
 						
 						<div class="col-md-6 form-group">
-							<label>Mobile No</label> <input class="form-control"
+							<label>Số điện thoại</label> <input class="form-control"
 								required="required" maxlength="15" minlength="8"
 								th:field="*{phoneNumber}" type="tel" placeholder="+123 456 789">
 						</div>

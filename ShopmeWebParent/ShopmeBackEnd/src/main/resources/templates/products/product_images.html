@@ -4,9 +4,9 @@
 	<div th:fragment="content" remove="tag">
 		<div class="row" id="divProductImage">
 			<div class="col">
-				<div><label>Main Image: [[*{mainImage}]]</label></div>
+				<div><label>Hình ảnh chính: [[*{mainImage}]]</label></div>
 				<div>
-					<img class="image-fuild" th:src="@{*{mainImagePath}}" 
+					<img width="300px" class="image-fuild" th:src="@{*{mainImagePath}}" 
 						alt="Main image review" id="thumbnail">
 				</div>
 				<div>
@@ -19,13 +19,13 @@
 			<th:block th:each="imageExtra,status : *{productImages}">
 				<div class="col" th:id="'divExtraImage'+${status.index}">
 					<div th:id="'extraImageHeader' + ${status.index}">
-						<label>Extra Image #[[${status.index + 1}]]:</label>
+						<label>Hình ảnh khác #[[${status.index + 1}]]:</label>
 						
 						<a class="btn fas fa-times-circle" style="float: right"
 							th:href="'javascript:removeExtraImage(' + ${status.index} +')'"></a>
 					</div>
 					<div>
-						<img class="image-fuild" th:src="@{${imageExtra.pathImage}}"  alt="Extra image #1 review" 
+						<img width="300px" class="image-fuild" th:src="@{${imageExtra.pathImage}}"  alt="Extra image #1 review" 
 							th:id="'extraThumbnail'+${status.index}">
 					</div>
 					<div>
@@ -41,9 +41,9 @@
 			
 			<div class="col" th:id="'divExtraImage' + ${countImageExtras}">
 				<div th:id="'extraImageHeader'+${countImageExtras}">
-					<label>Extra Image #[[${countImageExtras+1}]]:</label></div>
+					<label>Hình ảnh khác #[[${countImageExtras+1}]]:</label></div>
 				<div>
-					<img class="image-fuild" th:src="@{/images/default-product.png}" alt="Extra image #1 review" 
+					<img width="300px" class="image-fuild" th:src="@{/images/default-product.png}" alt="Extra image #1 review" 
 						th:id="'extraThumbnail'+${countImageExtras}">
 				</div>
 				<div>

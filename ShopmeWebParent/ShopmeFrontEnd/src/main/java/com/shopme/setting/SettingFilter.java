@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.shopme.category.CategoryService;
 import com.shopme.common.entity.Setting;
 
 import jakarta.servlet.Filter;
@@ -19,6 +20,8 @@ import jakarta.servlet.http.HttpServletRequest;
 public class SettingFilter implements Filter {
 	@Autowired
 	private SettingService service;
+	
+	@Autowired CategoryService categoryService;
 
 	@Override
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
@@ -35,6 +38,8 @@ public class SettingFilter implements Filter {
 		settings.forEach(setting -> {
 			request.setAttribute(setting.getKey(), setting.getValue());
 		});
+		
+		request.setAttribute("listCategories", categoryService.listCategoriesUsedInForm());
 		
 		chain.doFilter(request, response);
 	}

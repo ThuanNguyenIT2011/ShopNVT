@@ -34,7 +34,7 @@ public class CustomerService {
 	public void enabled(Integer id, boolean status) throws CustomerNotFoundExcetion {
 		Long count = customerRepository.countById(id);
 		if (count == null || count == 0) {
-			throw new CustomerNotFoundExcetion("Could not find any user by id " + id);
+			throw new CustomerNotFoundExcetion("Không thể tìm thấy khách hàng id " + id);
 		}
 		customerRepository.setEnabled(id, status);
 	}

@@ -45,9 +45,9 @@ public class SettingController {
 		model.addAttribute("listStates", stateRepository.findAll());
 		
 		listSettings.forEach(setting -> {
-			System.out.println(setting.getKey() + '|' + setting.getValue());
 			model.addAttribute(setting.getKey(), setting.getValue());
 		});
+		
 		return "/settings/settings";
 	}
 	

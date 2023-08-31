@@ -14,12 +14,16 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.shopme.address.AddressService;
+import com.shopme.common.entity.Address;
 import com.shopme.common.entity.CartItem;
 import com.shopme.common.entity.Customer;
 import com.shopme.common.entity.Product;
+import com.shopme.common.entity.ShippingRate;
 import com.shopme.customer.CustomerService;
 import com.shopme.product.ProductService;
 import com.shopme.secutity.oauth.CustomerOAuth2User;
+import com.shopme.shippingrate.ShippingRateService;
 
 import jakarta.servlet.http.HttpServletRequest;
 
@@ -31,6 +35,9 @@ public class CartItemController {
 	
 	@Autowired private ProductService productService;
 	
+	@Autowired private AddressService addressService;
+	
+	@Autowired private ShippingRateService shippingRateService;
 
 	@PostMapping("/add_to_cart")
 	public String addToCart(Model model, HttpServletRequest request) {
@@ -75,6 +82,21 @@ public class CartItemController {
 		model.addAttribute("total", cartItemService.getTotalPrice(customer));
 		List<CartItem> cartItems = cartItemService.listCartByCustomer(customer);
 		model.addAttribute("cartItems", cartItems);
+		
+		
+		ShippingRate shippingRate = null;
+		Address address = addressService.getDefaultAddressByCustomer(customer);
+		boolean userAddressPrimary = false;
+		if (address == null) {
+			shippingRate = shippingRateService.findShippingRateByCustomer(customer);
+			userAddressPrimary = true;
+		} else {
+			shippingRate = shippingRateService.findByShippingRateByAddressDefault(address);
+		}
+		
+		model.addAttribute("shippingSupported", shippingRate != null);
+		model.addAttribute("userAddressPrimary", userAddressPrimary);
+		
 		return "/cart/carts";
 	}
 	

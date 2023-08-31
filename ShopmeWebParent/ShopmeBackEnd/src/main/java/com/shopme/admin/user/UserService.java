@@ -117,14 +117,14 @@ public class UserService {
 		try {
 			return userRepo.findById(id).get();
 		} catch (NoSuchElementException e) {
-			throw new UserNotException("Could not find any user with ID " + id);
+			throw new UserNotException("Không tim thấy nhân viên ID " + id);
 		}
 	}
 	
 	public void delete(Integer id) throws UserNotException {
 		Long countUser = userRepo.countById(id);
 		if (countUser == 0 || countUser == null) {
-			throw new UserNotException("Could not find any user with ID " + id);
+			throw new UserNotException("Không tim thấy nhân viên ID " + id);
 		} else {
 			userRepo.deleteById(id);
 		}
@@ -133,7 +133,7 @@ public class UserService {
 	public void updateUserEnabled(Integer id, boolean enabled) throws UserNotException  {
 		Long countUser = userRepo.countById(id);
 		if (countUser == 0 || countUser == null) {
-			throw new UserNotException("Could not find any user with ID " + id);
+			throw new UserNotException("Không tim thấy nhân viên ID " + id);
 		} else {
 			userRepo.updateEnabledStatus(id, enabled);
 		}

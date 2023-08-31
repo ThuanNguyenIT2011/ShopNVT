@@ -10,7 +10,7 @@
 				<nav th:replace="nav :: header_customrer"></nav>
 
 				<div class="container-fluid">
-					<h1 class="h3 mb-2 text-gray-800">Manage Categories</h1>
+					<h1 class="h3 mb-2 text-gray-800">Quản lý danh mục</h1>
 					<div class="card shadow mb-4">
 						<div class="card-header py-3">
 							<h6 class="m-0 font-weight-bold text-primary">[[${pageTitle}]]</h6>
@@ -18,14 +18,16 @@
 
 						<div class="card-body">
 							<form class="container" th:action="@{/categories/save}"
-								method="post" onsubmit="return checkUnique(this)"
+								method="post" 
 								th:object="${category}" style="max-width: 700px;"
 								enctype="multipart/form-data">
+								<!--  onsubmit="return checkUnique(this)" -->
+								<input type="hidden" id="error" th:value="${error_name == null ? '' : error_name}">
+								
 								<input type="hidden" th:field="*{id}">
 								<div class="border rounded p-3">
 									<div class="form-group row">
-										<label for="name" class="col-sm-4 col-form-label">Category
-											Name:</label>
+										<label for="name" class="col-sm-4 col-form-label">Tên danh mục:</label>
 										<div class="col-sm-8">
 											<input type="text" class="form-control" th:field="*{name}"
 												required="required" minlength="3" maxlength="128">
@@ -33,7 +35,7 @@
 									</div>
 
 									<div class="form-group row">
-										<label for="alias" class="col-sm-4 col-form-label">Alias</label>
+										<label for="alias" class="col-sm-4 col-form-label">Tên gọi khác</label>
 										<div class="col-sm-8">
 											<input type="text" class="form-control" th:field="*{alias}"
 												required="required" minlength="2" maxlength="45">
@@ -41,7 +43,7 @@
 									</div>
 
 									<div class="form-group row">
-										<label for="alias" class="col-sm-4 col-form-label">Parent</label>
+										<label for="alias" class="col-sm-4 col-form-label">Cha</label>
 										<div class="col-sm-8">
 											<select class="form-control" th:field="*{parent}">
 												<option value="0">[No Parent]</option>
@@ -53,7 +55,7 @@
 									</div>
 
 									<div class="form-group row">
-										<label for="enable" class="col-sm-4 col-form-label">Enable</label>
+										<label for="enable" class="col-sm-4 col-form-label">Cho phép</label>
 										<div class="col-sm-8">
 											<div class="form-check">
 												<input th:field="*{enable}"
@@ -64,7 +66,7 @@
 									</div>
 
 									<div class="form-group row align-items-center">
-										<label for="fileImage" class="col-sm-4 col-form-label">Photos</label>
+										<label for="fileImage" class="col-sm-4 col-form-label">Hình ảnh</label>
 										<div class="col-sm-8">
 											<div class="row align-items-center">
 												<input type="hidden" th:field="*{image}"> <input
@@ -82,7 +84,7 @@
 
 									<div class="text-center">
 										<input type="submit" class="btn btn-primary m-3" value="Save">
-										<input type="button" class="btn btn-secondary" value="Cancels"
+										<input type="button" class="btn btn-secondary" value="Cancel"
 											id="buttonCancel">
 									</div>
 
@@ -110,8 +112,18 @@
 
 	<script type="text/javascript">
 		moduleURL = "[[@{/categories}]]";
+		
+		$(document).ready(function() {
+			error = $('#error').val();
+			if (error !== ''){
+				message = "Danh mục đã tồn tại "
+					+ $('#name').val();
+				showModalDialog("Cảnh báo", message);
+			}
+		});
 
-		function checkUnique(form) {
+		
+		/*function checkUnique(form) {
 			url = "[[@{/categories/check_unique}]]";
 			catId = $("#id").val();
 			catName = $("#name").val();
@@ -150,7 +162,7 @@
 										"Could not connect to the server");
 							});
 			return false;
-		}
+		}*/
 
 		function showModalDialog(title, message) {
 			$("#contentModelWarning").text(message);

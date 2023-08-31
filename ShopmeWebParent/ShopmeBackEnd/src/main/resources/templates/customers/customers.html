@@ -12,14 +12,14 @@
 
 				<div class="container-fluid">
 
-					<h1 class="h3 mb-2 text-gray-800">Manage Customer</h1>
+					<h1 class="h3 mb-2 text-gray-800">Quản lý khách hàng</h1>
 
 					<div th:if="${message != null}"
 						class="alert alert-success text-center" th:text="${message}"></div>
 
 					<div class="card shadow mb-4">
 						<div class="card-header py-3">
-							<h6 class="m-0 font-weight-bold text-primary">DataTables</h6>
+							<h6 class="m-0 font-weight-bold text-primary">Bảng dữ liệu</h6>
 						</div>
 
 						<div class="card-body">
@@ -37,10 +37,10 @@
 										<div class="form-row"
 											style="justify-content: end;">
 											<div class="col-auto">
-												<label class="sr-only" for="inlineFormInputGroup">Keyword</label>
+												<label class="sr-only" for="inlineFormInputGroup">Từ khóa</label>
 												<div class="input-group mb-2">
 													<div class="input-group-prepend">
-														<div class="input-group-text">Keyword</div>
+														<div class="input-group-text">Từ khóa</div>
 													</div>
 													<!-- th:value="${keyword}" -->
 													<input name="keyword"  type="search" th:value="${keyword}"
@@ -78,24 +78,24 @@
 											</th>
 											
 											<th
-												th:replace="fragments :: column_link('/customers', 'firstName','First Name', 'none')"></th>
+												th:replace="fragments :: column_link('/customers', 'firstName','Tên', 'none')"></th>
 											</th>
 											
 											<th
-												th:replace="fragments :: column_link('/customers', 'lastName','Last Name', 'none')"></th>
+												th:replace="fragments :: column_link('/customers', 'lastName','Họ', 'none')"></th>
 											</th>
 											
 											<th
 												th:replace="fragments :: column_link('/customers', 'email','Email', 'none')"></th>
 											</th> 
 											
-											<th>City</th>
+											<th>Thành phố</th>
 											
-											<th>State</th>
+											<th>Bang/Tỉnh</th>
 											
-											<th>Country</th>
+											<th>Quốc gia</th>
 
-											<th>Enabled</th>
+											<th>Cho phép</th>
 											<th></th>
 										</tr>
 									</thead>

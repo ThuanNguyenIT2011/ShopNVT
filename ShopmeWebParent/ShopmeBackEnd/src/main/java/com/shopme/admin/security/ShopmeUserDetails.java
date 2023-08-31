@@ -75,4 +75,7 @@ public class ShopmeUserDetails implements UserDetails{
 		return this.user.getPhotoImagePath();
 	}
 	
+	public boolean hasRole(String roleName) {
+		return user.hasRole(roleName);
+	}
 }

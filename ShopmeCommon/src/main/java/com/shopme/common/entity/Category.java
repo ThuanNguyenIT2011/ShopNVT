@@ -6,6 +6,7 @@ import java.util.Set;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -42,7 +43,7 @@ public class Category {
 	@JoinColumn(name = "parent_id")
 	private Category parent;
 
-	@OneToMany(mappedBy = "parent")
+	@OneToMany(mappedBy = "parent", fetch = FetchType.EAGER)
 	@OrderBy("name asc")
 	private Set<Category> children = new HashSet<>();
 
@@ -202,6 +203,10 @@ public class Category {
 		this.hasChidren = hasChidren;
 	}
 	
+	@Transient
+	public String getNameCatUser() {
+		return this.name.replaceAll("--", "");
+	}
 	
 	
 }

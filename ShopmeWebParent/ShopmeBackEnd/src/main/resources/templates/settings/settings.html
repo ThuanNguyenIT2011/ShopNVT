@@ -17,7 +17,7 @@
 				<nav th:replace="nav :: header_customrer"></nav>
 
 				<div class="container-fluid">
-					<h1 class="h3 mb-2 text-gray-800">Manage Setting</h1>
+					<h1 class="h3 mb-2 text-gray-800">Quản lý cài đặt</h1>
 					<div th:if="${message != null}"
 						class="alert alert-success text-center" th:text="${message}"></div>
 					<div class="card shadow mb-4">
@@ -28,15 +28,15 @@
 							<ul class="nav nav-tabs" id="myTab" role="tablist">
 								<li class="nav-item" role="presentation">
 									<button class="nav-link active" data-toggle="tab"
-										data-target="#overview" type="button">General</button>
+										data-target="#overview" type="button">Chung</button>
 								</li>
 								<li class="nav-item" role="presentation">
 									<button class="nav-link" data-toggle="tab"
-										data-target="#description" type="button" role="tab">Contries</button>
+										data-target="#description" type="button" role="tab">Quốc gia</button>
 								</li>
 								<li class="nav-item" role="presentation">
 									<button class="nav-link" data-toggle="tab"
-										data-target="#images" type="button" role="tab">States</button>
+										data-target="#images" type="button" role="tab">Bang/Tỉnh</button>
 								</li>
 								<li class="nav-item" role="presentation">
 									<button class="nav-link" id="messages-tab" data-toggle="tab"
@@ -87,6 +87,7 @@
 	<script type="text/javascript">
 		moduleURL = "[[@{/settings}]]";
 		$("#customerVerificationContent").richText();
+		$("#customerOrder").richText();
 		$("#orderConfirmationContent").richText({height: 400});
 		nameStatesBycontry = [];
 		$("input[name=nameStates]").each(function(){

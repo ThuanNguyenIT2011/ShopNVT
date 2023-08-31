@@ -10,7 +10,7 @@
 				<nav th:replace="nav :: header_customrer"></nav>
 
 				<div class="container-fluid">
-					<h1 class="h3 mb-2 text-gray-800">Manage Brands</h1>
+					<h1 class="h3 mb-2 text-gray-800">Quản lý nhãn hiệu</h1>
 					<div class="card shadow mb-4">
 						<div class="card-header py-3">
 							<h6 class="m-0 font-weight-bold text-primary">[[${pageTitle}]]</h6>
@@ -18,8 +18,10 @@
 
 						<div class="card-body">
 							<form class="container" th:action="@{/brands/save}" method="post"
-								onsubmit="return checkUnique(this)" th:object="${brand}"
+								 th:object="${brand}"
 								style="max-width: 700px;" enctype="multipart/form-data">
+								<!-- onsubmit="return checkUnique(this)" -->
+								<input type="hidden" id="error" th:value="${error_name == null ? '' : error_name}">
 								<input type="hidden" th:field="*{id}">
 								<div class="border rounded p-3">
 									<div class="form-group row">
@@ -32,8 +34,7 @@
 									</div>
 
 									<div class="form-group row align-items-center">
-										<label for="fileImage" class="col-sm-4 col-form-label">Brand
-											Logo</label>
+										<label for="fileImage" class="col-sm-4 col-form-label">Logo nhãn hiệu</label>
 										<div class="col-sm-8">
 											<div class="row align-items-center">
 												<input type="hidden" th:field="*{logo}"> <input
@@ -51,8 +52,7 @@
 									</div>
 
 									<div class="form-group row">
-										<label class="col-sm-4 col-form-label" for="categories">Selected
-											one or more categories:</label>
+										<label class="col-sm-4 col-form-label" for="categories">Chọn 1 hoặc nhiều danh mục:</label>
 										<div class="col-sm-8">
 											<select multiple class="form-control"
 												th:field="*{categories}" required="required"
@@ -64,8 +64,7 @@
 									</div>
 
 									<div class="form-group row">
-										<label for="name" class="col-sm-4 col-form-label">Chose
-											categories:</label>
+										<label for="name" class="col-sm-4 col-form-label">Danh mục đã chọn:</label>
 										<div class="col-sm-8">
 											<div id="chosenCatgories"></div>
 										</div>
@@ -102,7 +101,7 @@
 		<header th:replace="nav :: menu"></header>
 
 		<div>
-			<h1>Manage Categories | [[${pageTitle}]]</h1>
+			<h1>Quản lý nhãn hiệu | [[${pageTitle}]]</h1>
 		</div>
 
 
@@ -139,8 +138,9 @@
 										.append(`<span class="mr-1 badge badge-secondary">${catName}<span>`)
 							});
 		}
-
-		function checkUnique(form) {
+		
+		
+		/*function checkUnique(form) {
 			url = "[[@{/brands/check_unique_name}]]";
 			catId = $("#id").val();
 			catName = $("#name").val();
@@ -159,7 +159,7 @@
 							form.submit();
 							return true;
 						} else if (respone == "Duplication") {
-							message = "There is another brand having the name "
+							message = "Có một thương hiệu khác có tên "
 									+ catName;
 							showModalDialog("Warning", message);
 						} else {
@@ -170,7 +170,15 @@
 				showModalDialog("Error", "Could not connect to the server");
 			});
 			return false;
-		}
+		}*/
+		$(document).ready(function() {
+			error = $('#error').val();
+			if (error !== ''){
+				message = "Nhãn hiệu đã tồn tại "
+					+ $('#name').val();
+				showModalDialog("Cảnh báo", message);
+			}
+		});
 
 		function showModalDialog(title, message) {
 			$("#contentModelWarning").text(message);

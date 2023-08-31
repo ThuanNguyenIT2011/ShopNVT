@@ -54,49 +54,49 @@
 				<li class="nav-item" sec:authorize="hasAuthority('Admin')"><a
 					class="nav-link" th:href="@{/users}">Nhân viên</a></li>
 				<hr class="sidebar-divider my-0">
-				<th:block sec:authorize="hasAnyAuthority('Admin', 'Editor')">
+				<th:block sec:authorize="hasAnyAuthority('Editor')">
 					<li class="nav-item"><a class="nav-link"
 						th:href="@{/categories}">Danh mục</a></li>
 				</th:block>
 
-				<th:block sec:authorize="hasAnyAuthority('Admin', 'Editor')">
+				<th:block sec:authorize="hasAnyAuthority('Editor')">
 					<li class="nav-item"><a class="nav-link" th:href="@{/brands}">Nhãn hiệu</a></li>
 				</th:block>
 
 
 				<th:block
-					sec:authorize="hasAnyAuthority('Admin', 'Editor', 'Shipper', 'Salesperson')">
+					sec:authorize="hasAnyAuthority('Editor', 'Shipper', 'Salesperson')">
 					<li class="nav-item"><a class="nav-link"
 						th:href="@{/products}">Sản phẩm</a></li>
 				</th:block>
 
 
-				<th:block sec:authorize="hasAnyAuthority('Admin', 'Salesperson')">
+				<th:block sec:authorize="hasAnyAuthority('Saleperson')">
 					<li class="nav-item"><a class="nav-link"
 						th:href="@{/customers}">Khách hàng</a></li>
 				</th:block>
 				
-				<th:block sec:authorize="hasAnyAuthority('Admin', 'Salesperson')">
+				<th:block sec:authorize="hasAnyAuthority('Saleperson')">
 					<li class="nav-item"><a class="nav-link"
 						th:href="@{/shipping_reates}">Phí vận chuyển</a></li>
 				</th:block>
 
-				<th:block sec:authorize="hasAnyAuthority('Admin', 'Salesperson')">
+				<th:block sec:authorize="hasAnyAuthority('Salesperson')">
 					<li class="nav-item"><a class="nav-link"
 						th:href="@{/shipping}">Shipping</a></li>
 				</th:block>
 
 				<th:block
-					sec:authorize="hasAnyAuthority('Admin', 'Salesperson', 'Shipper')">
-					<li class="nav-item"><a class="nav-link" th:href="@{/oders}">Đơn hàng</a>
+					sec:authorize="hasAnyAuthority('Saleperson', 'Shipper')">
+					<li class="nav-item"><a class="nav-link" th:href="@{/orders}">Đơn hàng</a>
 					</li>
 				</th:block>
 
-				<th:block sec:authorize="hasAnyAuthority('Admin', 'Salesperson')">
+				<th:block sec:authorize="hasAnyAuthority('Salesperson')">
 					<li class="nav-item"><a class="nav-link" th:href="@{/report}">Báo cáo</a></li>
 				</th:block>
 
-				<th:block sec:authorize="hasAnyAuthority('Admin', 'Editor')">
+				<th:block sec:authorize="hasAnyAuthority('Editor')">
 					<li class="nav-item"><a class="nav-link" th:href="@{articles}">Bài viết</a></li>
 				</th:block>
 

@@ -1,5 +1,5 @@
 <div class="modal-header">
-	<h5 class="modal-title">Customer Detail</h5>
+	<h5 class="modal-title">Chi tiết khách hàng</h5>
 	<button type="button" class="close" data-dismiss="modal"
 		aria-label="Close">
 		<span aria-hidden="true">&times;</span>
@@ -9,11 +9,11 @@
 	<ul class="nav nav-tabs" id="myTab" role="tablist">
 		<li class="nav-item" role="presentation">
 			<button class="nav-link active" data-toggle="tab"
-				data-target="#overview" type="button">General</button>
+				data-target="#overview" type="button">Chung</button>
 		</li>
 		<li class="nav-item" role="presentation">
 			<button class="nav-link" data-toggle="tab" data-target="#description"
-				type="button" role="tab">Address</button>
+				type="button" role="tab">Địa chỉ</button>
 		</li>
 
 	</ul>
@@ -22,8 +22,7 @@
 	<div class="tab-content" th:object="${customer}">
 		<div class="tab-pane active p-3" id="overview" role="tabpanel">
 			<div class="form-group row">
-				<label for="name" class="col-sm-2 col-form-label">Customer
-					Id:</label>
+				<label for="name" class="col-sm-2 col-form-label">ID Khách hàng:</label>
 				<div class="col-sm-10">
 					<input type="text" class="form-control" th:field="*{id}"
 						readonly="readonly">
@@ -31,8 +30,7 @@
 			</div>
 
 			<div class="form-group row">
-				<label for="name" class="col-sm-2 col-form-label">Customer
-					Name:</label>
+				<label for="name" class="col-sm-2 col-form-label">Tên khách hàng:</label>
 				<div class="col-sm-10">
 					<input type="text" class="form-control" th:field="*{fullName}"
 						readonly="readonly">
@@ -48,7 +46,7 @@
 			</div>
 
 			<div class="form-group row">
-				<label for="name" class="col-sm-2 col-form-label">Phone:</label>
+				<label for="name" class="col-sm-2 col-form-label">Số điện thoại:</label>
 				<div class="col-sm-10">
 					<input type="text" class="form-control" th:field="*{phoneNumber}"
 						readonly="readonly">
@@ -56,7 +54,7 @@
 			</div>
 
 			<div class="form-group row">
-				<label for="name" class="col-sm-2 col-form-label">Enabled:</label>
+				<label for="name" class="col-sm-2 col-form-label">Cho phép:</label>
 				<div class="col-sm-10">
 					<div class="form-check form-check-inline">
 						 <input class="form-check-input" type="checkbox" th:field="*{enabled}">
@@ -65,8 +63,7 @@
 			</div>
 
 			<div class="form-group row">
-				<label for="name" class="col-sm-2 col-form-label">Create
-					Time:</label>
+				<label for="name" class="col-sm-2 col-form-label">Thời gian tạo:</label>
 				<div class="col-sm-10">
 					<input type="text" class="form-control" th:field="*{createdTime}"
 						readonly="readonly">
@@ -76,7 +73,7 @@
 
 		<div class="tab-pane " id="description" role="tabpanel">
 			<div class="form-group row">
-				<label for="name" class="col-sm-2 col-form-label">Address 1:</label>
+				<label for="name" class="col-sm-2 col-form-label">Địa chỉ 1:</label>
 				<div class="col-sm-10">
 					<input type="text" class="form-control" th:field="*{addressLine1}"
 						readonly="readonly">
@@ -84,7 +81,7 @@
 			</div>
 
 			<div class="form-group row">
-				<label for="name" class="col-sm-2 col-form-label">Address 2:</label>
+				<label for="name" class="col-sm-2 col-form-label">Địa chỉ 2:</label>
 				<div class="col-sm-10">
 					<input type="text" class="form-control" th:field="*{addressLine2}"
 						readonly="readonly">
@@ -92,7 +89,7 @@
 			</div>
 
 			<div class="form-group row">
-				<label for="name" class="col-sm-2 col-form-label">City:</label>
+				<label for="name" class="col-sm-2 col-form-label">Thành phố:</label>
 				<div class="col-sm-10">
 					<input type="text" class="form-control" th:field="*{city}"
 						readonly="readonly">
@@ -100,7 +97,7 @@
 			</div>
 
 			<div class="form-group row">
-				<label for="name" class="col-sm-2 col-form-label">State:</label>
+				<label for="name" class="col-sm-2 col-form-label">Bang/Tỉnh:</label>
 				<div class="col-sm-10">
 					<input type="text" class="form-control" th:field="*{country.name}"
 						readonly="readonly">

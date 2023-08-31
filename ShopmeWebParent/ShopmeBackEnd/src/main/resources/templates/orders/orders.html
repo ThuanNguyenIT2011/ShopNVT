@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html>
+<header
+	th:replace="fragments :: page_header('Categories - Shopme Admin Control Panel', 'none')"></header>
+<body id="page-top">
+	<div id="wrapper" class="container-fuild">
+		<nav th:replace="nav :: menu"></nav>
+
+		<div id="content-wrapper" class="d-flex flex-column">
+			<div id="content">
+				<nav th:replace="nav :: header_customrer"></nav>
+
+				<div class="container-fluid">
+
+					<h1 class="h3 mb-2 text-gray-800">Quản lý đơn hàng</h1>
+
+					<div th:if="${message != null}"
+						class="alert alert-success text-center" th:text="${message}"></div>
+
+					<div class="card shadow mb-4">
+						<div class="card-header py-3">
+							<h6 class="m-0 font-weight-bold text-primary">Bảng dữ liệu</h6>
+						</div>
+
+						<div class="card-body">
+
+							<div class="row">
+								<div class="col-6">
+									
+								</div>
+								<div class="col-6">
+									
+									<!--  -->
+									<form class="d-flex" style="justify-content: end" th:action="@{'/orders/page/1'}" id="formFilter">
+										<input type="hidden" name="sortField" th:value="${sortField}">
+										<input type="hidden" name="sortDir" th:value="${sortDir}">
+										<div class="form-row align-items-center"
+											style="justify-content: end;">
+											<div class="col-auto">
+												<label class="sr-only" for="inlineFormInputGroup">Keyword</label>
+												<div class="input-group mb-2">
+													<div class="input-group-prepend">
+														<div class="input-group-text">Keyword</div>
+													</div>
+													<input name="keyword" th:value="${keyword}" type="search"
+														class="form-control" id="inlineFormInputGroup"
+														placeholder="Keyword">
+												</div>
+											</div>
+											<div class="col-auto">
+												<button type="submit" class="btn btn-primary mb-2">
+													<i class="fa-solid fa-magnifying-glass"></i>
+												</button>
+											</div>
+
+											<div class="col-auto">
+												<button class="btn btn-secondary mb-2" onclick="resetForm()"
+													value="Clear">
+													<i class="fa-solid fa-eraser"></i>
+												</button>
+											</div>
+
+										</div>
+									</form>
+									<!--  -->
+
+									
+								</div>
+							</div>
+							<div class="table-responsive">
+								<table id="dataTable" class="table table-bordered" width="100%"
+									cellspacing="0">
+									<thead>
+										<tr>
+											<th
+												th:replace="fragments :: column_link('/orders', 'id','ID', 'none')"></th>
+											</th>
+											
+											<th>Khách hàng</th>
+
+											<th
+												th:replace="fragments :: column_link('/orders', 'total','Tổng tiền', 'none')"></th>
+											</th>
+
+											<th
+												th:replace="fragments :: column_link('/orders', 'dateOrdertime','Ngày đặt', 'none')"></th>
+											</th>
+
+											<th>Điểm đến</th>
+											
+											<th>Phương thức thanh toán</th>
+											
+											<th>Trạng thái</th>
+											<th></th>
+										</tr>
+									</thead>
+
+									<tbody>
+										<tr th:each="order : ${orders}">
+											<td class="hideable-column">[[${order.id}]]</td>
+											
+											<td> <a class="link-detail" th:href="@{'/customers/detail/' + ${order.customer.id}}">[[${order.customer.fullName}]]</a> </td>
+											<td>
+												<span
+									th:if="${CURRENCY_SYMBOL_POSITION=='before'}">[[${CURRENCY_SYMBOL}]]
+										[[${#numbers.formatDecimal(order.total,1,THOUSANDS_POIINT_TYPE,DECIMAL_DIGITS,DECIMAL_POINT_TYPE)}]]</span>
+									<span th:unless="${CURRENCY_SYMBOL_POSITION=='before'}">
+										[[${#numbers.formatDecimal(order.total,1,THOUSANDS_POIINT_TYPE,DECIMAL_DIGITS,DECIMAL_POINT_TYPE)}]][[${CURRENCY_SYMBOL}]]
+											</td>
+											<td>[[${order.dateOrdertime}]]</td>
+											<td>[[${order.state.name}]], [[${order.state.country.name}]]</td>
+											<td>[[${order.paymentMethod}]]</td>
+											<td>[[${order.orderStatus}]]</td>
+											
+											<td class="d-flex align-items-center"><a
+												class="link-detailOrder"
+												th:href="@{'/orders/detail/' + ${order.id}}"
+												title="View details of this order"> <i
+													class="fa-solid fa-circle-info icon-gray"></i></a> &nbsp;
+												<a
+												class="link-editStatus"
+												th:href="@{'/orders/edit/' + ${order.id}}"
+												title="View details of this order"> <i
+													class="fa-solid fa-pen-to-square icon-gray"></i></a> 
+												
+											</td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+							<div
+								th:replace="fragments :: pagination('/orders', 'orders')"></div>
+						</div>
+						<footer th:replace="fragments :: footer"></footer>
+					</div>
+
+
+				</div>
+
+				<div class="modal fade" id="comfirmModal" tabindex="-1"
+					role="dialog">
+					<div class="modal-dialog" role="document">
+						<div class="modal-content">
+							<div class="modal-header">
+								<h5 class="modal-title" id="modalTitle">Delete Comfirmation</h5>
+								<button type="button" class="close" data-dismiss="modal"
+									aria-label="Close">
+									<span aria-hidden="true">&times;</span>
+								</button>
+							</div>
+							<div class="modal-body">
+								<p id="contentComfirmModal"></p>
+							</div>
+							<div class="modal-footer">
+								<a href="" class="btn btn-success" id="yesButton">Yes</a>
+
+								<button type="button" class="btn btn-danger"
+									data-dismiss="modal">No</button>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="modal fade " id="detailModal" tabindex="-1">
+		<div class="modal-dialog modal-xl">
+			<div class="modal-content"></div>
+		</div>
+	</div>
+	
+
+	<script type="text/javascript">
+		modulUrl = "[[@{products}]]"
+		$(document).ready(
+				function() {
+					$('.link-detail').on(
+							"click",
+							function(e) {
+								e.preventDefault();
+								linkDetail = $(this).attr('href');
+
+								$("#detailModal").modal('show').find(
+										'.modal-content').load(linkDetail);
+
+							})
+							
+					$('.link-detailOrder').on(
+							"click",
+							function(e) {
+								e.preventDefault();
+								linkDetail = $(this).attr('href');
+
+								$("#detailModal").modal('show').find(
+										'.modal-content').load(linkDetail);
+
+							})
+				});
+
+		function resetForm(id) {
+			window.location = "[[@{/products}]]";
+		}
+	</script>
+</body>
+</html>

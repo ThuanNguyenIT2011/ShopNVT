@@ -1,57 +1,71 @@
 <!DOCTYPE html>
 <html>
-<header th:replace="fragments :: page_header('Login - Shopme Admin Control Panel', 'none')"></header>
-<body>
-	<div class="container-fuild text-center">
-	<!--  
-		<div>
-			<img alt="" th:src="@{/images/ShopmeAdminBig.png}">
-		</div>-->
+<header
+	th:replace="fragments :: page_header('Login - Shopme Admin Control Panel', 'none')"></header>
+<body class="bg-gradient-primary">
 
-		<form th:action="@{/login}" method="POST" style="max-width: 350px;"
-			class="container">
-			<div class="border border-secondary rounded p-3">
-				<div th:if="${param.logout}"
-					class="alert alert-success alert-dismissible fade show"
-					role="alert">
-					<strong>Logout!</strong>
-					<button type="button" class="close" data-dismiss="alert"
-						aria-label="Close">
-						<span aria-hidden="true">&times;</span>
-					</button>
+	<div class="container">
+
+		<!-- Outer Row -->
+		<div class="row justify-content-center">
+
+			<div class="col-xl-10 col-lg-12 col-md-9">
+
+				<div class="card o-hidden border-0 shadow-lg my-5">
+					<div class="card-body p-0">
+						<!-- Nested Row within Card Body -->
+						<div class="row">
+							<div class="col-lg-3 d-lg-block "></div>
+							<div class="col-lg-6">
+								<div class="p-5">
+									<div class="text-center">
+										<h1 class="h4 text-gray-900 mb-4">Đăng nhập</h1>
+									</div>
+									<div th:if="${param.logout}"
+										class="alert alert-success alert-dismissible fade show"
+										role="alert">
+										<strong>Logout!</strong>
+										<button type="button" class="close" data-dismiss="alert"
+											aria-label="Close">
+											<span aria-hidden="true">&times;</span>
+										</button>
+									</div>
+									<form class="user" th:action="@{/login}" method="POST">
+										<div th:if="${param.error}"
+											class="alert alert-warning alert-dismissible fade show"
+											role="alert">
+											<strong>Tài khoản không tồn tại!</strong>
+											<button type="button" class="close" data-dismiss="alert"
+												aria-label="Close">
+												<span aria-hidden="true">&times;</span>
+											</button>
+										</div>
+										<div class="form-group">
+											<input type="email" name="email" class="form-control"
+												placeholder="E-mail" required />
+										</div>
+										<div class="form-group">
+											<input type="password" name="password" class="form-control"
+												placeholder="Password" required />
+										</div>
+										<div class="form-group">
+											<div class="custom-control custom-checkbox small">
+												<input type="checkbox" name="remember-me" />&nbsp;Nhớ mật khẩu
+											</div>
+										</div>
+										<button 
+											class="btn btn-primary btn-user btn-block" type="submit"> Login </button>
+									</form>
+								</div>
+							</div>
+							<div class="col-lg-3 d-none d-lg-block"></div>
+						</div>
+					</div>
 				</div>
 
-				<div th:if="${param.error}"
-					class="alert alert-warning alert-dismissible fade show"
-					role="alert">
-					<strong>Account invalid!</strong>
-					<button type="button" class="close" data-dismiss="alert"
-						aria-label="Close">
-						<span aria-hidden="true">&times;</span>
-					</button>
-				</div>
-
-				<p>Access to Shopme Control Panel</p>
-				<p>
-					<input type="email" name="email" class="form-control"
-						placeholder="E-mail" required />
-				</p>
-				<p>
-					<input type="password" name="password" class="form-control"
-						placeholder="Password" required />
-				</p>
-				<p>
-					<input type="checkbox" name="remember-me" />&nbsp;Remenber Me
-				</p>
-				<p>
-					<input type="submit" value="Login" class="btn btn-primary">
-				</p>
 			</div>
 
-		</form>
+		</div>
 
-		<footer th:replace="fragments :: footer"></footer>
 	</div>
-
-</body>
 </html>

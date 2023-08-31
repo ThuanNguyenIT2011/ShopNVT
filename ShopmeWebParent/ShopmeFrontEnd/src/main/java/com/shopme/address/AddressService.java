@@ -62,4 +62,8 @@ public class AddressService {
 		
 	}
 	
+	public Address getDefaultAddressByCustomer(Customer customer) {
+		return addressRepository.findAddressDefaultByCustomer(customer.getId());
+	}
+	
 }

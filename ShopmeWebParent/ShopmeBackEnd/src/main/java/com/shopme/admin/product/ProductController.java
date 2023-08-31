@@ -12,6 +12,7 @@ import java.util.Set;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Controller;
@@ -30,6 +31,7 @@ import com.shopme.admin.category.service.CategoryService;
 import com.shopme.common.entity.Brand;
 import com.shopme.common.entity.Product;
 import com.shopme.common.entity.ProductImage;
+import com.shopme.common.entity.Role;
 
 @Controller
 public class ProductController {
@@ -107,6 +109,19 @@ public class ProductController {
 			@RequestParam(name = "detailIDs") String[] detailIDs,
 			@RequestParam(name = "imageIDs", required = false) String[] imageIDs,
 			@RequestParam(name = "imageNames", required = false) String[] imageNames) throws IOException {
+		
+		boolean isUnique = service.isUniqueName(product.getId(), product.getName());
+		if (!isUnique) {
+			model.addAttribute("product", product);
+			model.addAttribute("listBrands", brandService.listAll());
+			model.addAttribute("pageTitle", "Create New Product");
+			model.addAttribute("countImageExtras", 0);
+			
+			model.addAttribute("error_name", "error");
+			
+			return "/products/products_form";
+		}
+		
 		setNameMainImages(mainImageMutipart, product);
 		setExistingExtraImageNames(imageIDs, imageNames, product);
 		setNewNameExtraImage(extraImagesMutiparts, product);
@@ -118,7 +133,7 @@ public class ProductController {
 
 		deleteExtraImageWereRemovedOnForm(product);
 		
-		redirectAttributes.addFlashAttribute("message", "The product has been saved successfully");
+		redirectAttributes.addFlashAttribute("message", "Sản phẩm đã lưu thành công");
 		return "redirect:/products";
 	}
 
@@ -186,6 +201,7 @@ public class ProductController {
 		
 		if (extraImagesMutiparts.length > 0) {
 			for (MultipartFile multipartFile : extraImagesMutiparts) {
+				System.out.println("image image");
 				if (!multipartFile.isEmpty()) {
 					String fileName = StringUtils.cleanPath(multipartFile.getOriginalFilename());
 					String dir = "../product-images/" + product.getId() + "/extras";
@@ -221,7 +237,7 @@ public class ProductController {
 		try {
 			service.changeEnabled(id, status);
 			String mess = status ? "Enabled" : "Disabled";
-			redirectAttributes.addFlashAttribute("message", "The product id " + id + " has been " + mess);
+			redirectAttributes.addFlashAttribute("message", "Sản phẩm id " + id + " đã được " + mess);
 		} catch (ProductNotFoundException e) {
 			redirectAttributes.addFlashAttribute("message", e.getMessage());
 		}
@@ -238,9 +254,11 @@ public class ProductController {
 			FileUploadUtil.removeDir(dirExtras);
 			FileUploadUtil.removeDir(dirImageMain);
 			
-			redirectAttributes.addFlashAttribute("message", "The product id " + id + " has been deleted successfully");
+			redirectAttributes.addFlashAttribute("message", "Sản phẩm id " + id + " đã xóa thành công");
 		} catch (ProductNotFoundException e) {
 			redirectAttributes.addFlashAttribute("message", e.getMessage());
+		} catch (DataIntegrityViolationException ex ) {
+			redirectAttributes.addFlashAttribute("message", "Sản phẩm id " + id + " không thể xóa");
 		}
 		
 		return "redirect:/products";
@@ -253,7 +271,7 @@ public class ProductController {
 			Product productInDb = service.get(id);
 			model.addAttribute("product", productInDb);
 			model.addAttribute("listBrands", brandService.listAll());
-			model.addAttribute("pageTitle", "Edit New Product (ID: " + id + " )");
+			model.addAttribute("pageTitle", "Chỉnh sửa sản phẩm (ID: " + id + " )");
 			model.addAttribute("countImageExtras", productInDb.getProductImages().size());
 			return "/products/products_form";
 		} catch (ProductNotFoundException e) {

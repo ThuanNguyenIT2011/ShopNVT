@@ -110,6 +110,12 @@ public class AddressController {
 		addressService.setDefaultAddress(addressId, customer.getId());
 		ra.addFlashAttribute("message", "Đặt mặt dịnh địa chỉ thành công");
 		
+		String redirect = request.getParameter("redirect");
+		if ("cart".equals(redirect)) {
+			ra.addFlashAttribute("message", "Cập nhập địa chỉ thành công.");
+			return "redirect:/" + redirect;
+		}
+		
 		return "redirect:/addresses";
 	}
 	

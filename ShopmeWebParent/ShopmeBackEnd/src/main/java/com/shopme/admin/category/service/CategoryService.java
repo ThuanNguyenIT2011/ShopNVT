@@ -153,7 +153,7 @@ public class CategoryService {
 		try {
 			return categoryRepo.findById(id).get();
 		} catch (Exception e) {
-			throw new CategoryNotFoundException("Could not find any category with ID " + id);
+			throw new CategoryNotFoundException("Không tìm thấy danh mục ID " + id);
 		}
 	}
 	
@@ -208,7 +208,7 @@ public class CategoryService {
 			Category categoryInDb = categoryRepo.findById(id).get();
 			categoryRepo.updaetCategoryEnabled(id, enabled);
 		} catch (Exception e) {
-			throw new CategoryNotFoundException("Could not find any category with ID " + id);
+			throw new CategoryNotFoundException("Không tìm thấy danh mục ID " + id);
 		}
 	}
 	
@@ -221,7 +221,7 @@ public class CategoryService {
 				categoryRepo.deleteById(id);
 			}
 		} catch (Exception e) {
-			throw new CategoryNotFoundException("Could not find any category with ID " + id);
+			throw new CategoryNotFoundException("Không tìm thấy danh mục ID " + id);
 		}
 	}
 }

@@ -62,6 +62,16 @@ public class EmailSetting {
 	public String getCustomerVerifyContent() {
 		return getValueByKey("CUSTOMER_VERIFY_CONTENT");
 	}
+	
+	//CUSTOMER_ORDER_SUBJECT
+	public String getCustomerOrderSubject() {
+		return getValueByKey("CUSTOMER_ORDER_SUBJECT");
+	}
+	//CUSTOMER_ORDER_CONTENT
+	public String getCustomerOrderContent() {
+		return getValueByKey("CUSTOMER_ORDER_CONTENT");
+	}
+	
 
 	public List<Setting> getListSetting() {
 		return listSetting;

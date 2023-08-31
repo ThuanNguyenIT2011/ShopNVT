@@ -21,13 +21,13 @@
 							<div class="col-lg-6">
 								<div class="p-5">
 									<div class="text-center">
-										<h1 class="h4 text-gray-900 mb-4">Welcome Back!</h1>
+										<h1 class="h4 text-gray-900 mb-4">Đăng nhập</h1>
 									</div>
 									<form th:action="@{/login}" class="user" method="POST">
 										<div th:if="${param.error}"
 											class="alert alert-warning alert-dismissible fade show"
 											role="alert">
-											<strong>Account invalid!</strong>
+											<strong>Tài khoản không tồn tại!</strong>
 											<button type="button" class="close" data-dismiss="alert"
 												aria-label="Close">
 												<span aria-hidden="true">&times;</span>
@@ -36,38 +36,36 @@
 										<div class="form-group">
 											<input type="email" class="form-control form-control-user"
 												id="exampleInputEmail" aria-describedby="emailHelp"
-												name="email" placeholder="Enter Email Address...">
+												name="email" placeholder="Nhập địa chỉ email">
 										</div>
 										<div class="form-group">
 											<input type="password" class="form-control form-control-user"
 												name="password" id="exampleInputPassword"
-												placeholder="Password">
+												placeholder="Nhập mật khẩu">
 										</div>
 										<div class="form-group">
 											<div class="custom-control custom-checkbox small">
 												<input name="remember-me" type="checkbox"
 													class="custom-control-input" id="customCheck"> <label
-													class="custom-control-label" for="customCheck">Remember
-													Me</label>
+													class="custom-control-label" for="customCheck">Nhớ mật khẩu</label>
 											</div>
 										</div>
 										<button type="submit"
 											class="btn btn-primary btn-user btn-block">Login</button>
 										<hr>
 										<a  th:href="@{/oauth2/authorization/google}" class="btn btn-google btn-user btn-block">
-											<i class="fab fa-google fa-fw"></i> Login with Google
+											<i class="fab fa-google fa-fw"></i> Đăng nhập Google
 										</a> <a th:href="@{/oauth2/authorization/facebook}"
 											class="btn btn-facebook btn-user btn-block"> <i
-											class="fab fa-facebook-f fa-fw"></i> Login with Facebook
+											class="fab fa-facebook-f fa-fw"></i> Đăng nhập với Facebook
 										</a>
 									</form>
 									<hr>
 									<div class="text-center">
-										<a class="small" th:href="@{/forgot_password}">Forgot
-											Password?</a>
+										<a class="small" th:href="@{/forgot_password}">Quên mật khẩu?</a>
 									</div>
 									<div class="text-center">
-										<a class="small" th:href="@{/register}">Create an Account!</a>
+										<a class="small" th:href="@{/register}">Tạo tài khoản!</a>
 									</div>
 								</div>
 							</div>

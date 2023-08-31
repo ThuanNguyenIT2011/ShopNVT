@@ -5,7 +5,7 @@
 		<form class="container-fuild" th:action="@{/settings/save_genaral}" method="post"
 			enctype="multipart/form-data">
 			<div class="form-group row">
-				<label for="name" class="col-sm-2 col-form-label">Site Name:</label>
+				<label for="name" class="col-sm-2 col-form-label">Tên website:</label>
 				<div class="col-sm-10">
 					<input type="text" class="form-control" name="SITE_NAME"
 						th:value="${SITE_NAME}" required="required" minlength="3"
@@ -23,8 +23,7 @@
 			</div>
 
 			<div class="form-group row align-items-center">
-				<label for="fileImage" class="col-sm-2 col-form-label">Site
-					Logo</label>
+				<label for="fileImage" class="col-sm-2 col-form-label">Logo trang web</label>
 				<div class="col-sm-10">
 					<div class="container-fluid">
 						<div class="row align-items-center">
@@ -39,7 +38,7 @@
 			</div>
 
 			<div class="form-group row">
-				<label for="alias" class="col-sm-2 col-form-label">Currency Type: </label>
+				<label for="alias" class="col-sm-2 col-form-label">Loại tiền tệ: </label>
 				<div class="col-sm-10">
 					<select class="form-control" name="CURRENCY_ID">
 						<th:block th:each="cur : ${listCurrenies}">
@@ -50,7 +49,7 @@
 			</div>
 			
 			<div class="form-group row">
-				<label for="alias" class="col-sm-2 col-form-label">Currency Symbol Position: </label>
+				<label for="alias" class="col-sm-2 col-form-label">Vị trí ký hiệu tiền tệ: </label>
 				<div class="col-sm-10">
 					<select class="form-control" name="CURRENCY_SYMBOL_POSITION">						
 						<option th:selected="(${CURRENCY_SYMBOL_POSITION}=='before')" 
@@ -62,7 +61,7 @@
 			</div>
 			
 			<div class="form-group row">
-				<label for="alias" class="col-sm-2 col-form-label">Decimal Point Type: </label>
+				<label for="alias" class="col-sm-2 col-form-label">Loại dấu thập phân: </label>
 				<div class="col-sm-10">
 					<select class="form-control" name="DECIMAL_POINT_TYPE">						
 						<option th:selected="(${DECIMAL_POINT_TYPE}=='POINY')" 
@@ -74,7 +73,7 @@
 			</div>
 			
 			<div class="form-group row">
-				<label for="alias" class="col-sm-2 col-form-label">Decimal Digits: </label>
+				<label for="alias" class="col-sm-2 col-form-label">Số chữ số thập phân: </label>
 				<div class="col-sm-10">
 					<select class="form-control" name="DECIMAL_DIGITS">						
 						<option th:selected="(${DECIMAL_DIGITS}==1)" value="1">1</option>
@@ -86,7 +85,7 @@
 			</div>
 			
 			<div class="form-group row">
-				<label for="alias" class="col-sm-2 col-form-label">Thousands Point Type: </label>
+				<label for="alias" class="col-sm-2 col-form-label">Kiểu ký hiệu hàng nghìn: </label>
 				<div class="col-sm-10">
 					<select class="form-control" name="DECIMAL_POINT_TYPE">						
 						<option th:selected="(${DECIMAL_POINT_TYPE}=='POINY')" 

@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html>
+<header
+	th:replace="fragments :: page_header('Categories - Shopme Admin Control Panel', 'none')"></header>
+<body id="page-top">
+	<div id="wrapper" class="container-fuild">
+		<nav th:replace="nav :: menu"></nav>
+
+		<div id="content-wrapper" class="d-flex flex-column">
+			<div id="content">
+				<nav th:replace="nav :: header_customrer"></nav>
+
+				<div class="container-fluid">
+
+					<h1 class="h3 mb-2 text-gray-800">Giao hàng</h1>
+
+					<div th:if="${message != null}"
+						class="alert alert-success text-center" th:text="${message}"></div>
+
+					<div class="card shadow mb-4">
+						<div class="card-header py-3">
+							<h6 class="m-0 font-weight-bold text-primary">Bảng dữ liệu</h6>
+						</div>
+
+						<div class="card-body">
+
+							<div class="row">
+								<div class="col-6"></div>
+								<div class="col-6">
+
+									<!--  -->
+									<form class="d-flex" style="justify-content: end"
+										th:action="@{'/orders/page/1'}" id="formFilter">
+										<input type="hidden" name="sortField" th:value="${sortField}">
+										<input type="hidden" name="sortDir" th:value="${sortDir}">
+										<div class="form-row align-items-center"
+											style="justify-content: end;">
+											<div class="col-auto">
+												<label class="sr-only" for="inlineFormInputGroup">Keyword</label>
+												<div class="input-group mb-2">
+													<div class="input-group-prepend">
+														<div class="input-group-text">Keyword</div>
+													</div>
+													<input name="keyword" th:value="${keyword}" type="search"
+														class="form-control" id="inlineFormInputGroup"
+														placeholder="Keyword">
+												</div>
+											</div>
+											<div class="col-auto">
+												<button type="submit" class="btn btn-primary mb-2">
+													<i class="fa-solid fa-magnifying-glass"></i>
+												</button>
+											</div>
+
+											<div class="col-auto">
+												<button class="btn btn-secondary mb-2" onclick="resetForm()"
+													value="Clear">
+													<i class="fa-solid fa-eraser"></i>
+												</button>
+											</div>
+
+										</div>
+									</form>
+									<!--  -->
+
+
+								</div>
+							</div>
+							<div class="table-responsive">
+								<th:block th:each="order : ${orders}">
+									<div class="card mb-1" >
+										<div class="card-header" style="display: flex; justify-content: space-between;">
+											<p>Đơn hàng #[[${order.id}]]</p>
+											<p><a
+												class="link-detailOrder"
+												th:href="@{'/orders/detail/' + ${order.id}}"
+												title="View details of this order"> <i
+													class="fa-solid fa-circle-info icon-gray"></i></a></p>
+										</div>
+										<div class="card-body">
+											<h5 class="card-title">
+												<i class="fa-solid fa-user"></i> [[${order.fullName}]]
+											</h5>
+											<p class="card-text">
+												<i class="fa-solid fa-house"></i> [[${order.address}]]
+											</p>
+											<p class="card-text">
+												<i class="fa-solid fa-phone"></i> [[${order.phoneNumber}]]
+											</p>
+											<p class="card-text">
+												[[${order.paymentMethod}]]: <span
+													th:if="${CURRENCY_SYMBOL_POSITION=='before'}">[[${CURRENCY_SYMBOL}]]
+													[[${#numbers.formatDecimal(order.total,1,THOUSANDS_POIINT_TYPE,DECIMAL_DIGITS,DECIMAL_POINT_TYPE)}]]</span>
+												<span th:unless="${CURRENCY_SYMBOL_POSITION=='before'}">
+													[[${#numbers.formatDecimal(order.total,1,THOUSANDS_POIINT_TYPE,DECIMAL_DIGITS,DECIMAL_POINT_TYPE)}]][[${CURRENCY_SYMBOL}]]
+												</span>
+											</p>
+											
+											<div class="row">
+												<div class="col-1">
+													<th:block th:if="${order.picked}">
+														<p class="icon-green" style="font-size: 25px;"><i class="fa-solid fa-people-carry-box"></i></p>
+													</th:block>
+													
+													<th:block th:unless="${order.picked}">
+														<a style="font-size: 25px;" class="icon-gray" 
+															th:href="@{'/orders/update/'+${order.id}+'?status=PICKED'}"><i class="fa-solid fa-people-carry-box"></i></a>
+													</th:block>
+												</div>
+												
+												<div class="col-1">
+													<th:block th:if="${order.shipping}">
+														<p class="icon-green" style="font-size: 25px;"><i class="fa-solid fa-shipping-fast"></i></p>
+													</th:block>
+													
+													<th:block th:unless="${order.shipping}">
+														<a style="font-size: 25px;" class="icon-gray" 
+															th:href="@{'/orders/update/'+${order.id}+'?status=SHIPPING'}"><i class="fa-solid fa-shipping-fast"></i></a>
+													</th:block>
+												</div>
+												
+												<div class="col-1">
+													<th:block th:if="${order.delivered}">
+														<p class="icon-green" style="font-size: 25px;">
+															<i class="fa-solid fa-box-open"></i>
+														</p>
+													</th:block>
+													
+													<th:block th:unless="${order.delivered}">
+														<a style="font-size: 25px;" class="icon-gray"
+															th:href="@{'/orders/update/'+${order.id}+'?status=DELIVERED'}">
+															<i class="fa-solid fa-box-open"></i>
+														</a>
+													</th:block>
+												</div>
+												
+												<div class="col-1">
+													<th:block th:if="${order.return}">
+														<p class="icon-green" style="font-size: 25px;">
+															<i class="fa-solid fa-undo"></i>
+														</p>
+													</th:block>
+													
+													<th:block th:unless="${order.return}">
+														<a style="font-size: 25px;" class="icon-gray"
+															th:href="@{'/orders/update/'+${order.id}+'?status=RETURNED'}">
+															<i class="fa-solid fa-undo"></i>
+														</a>
+													</th:block>
+												</div>
+												
+												
+											<!--  												
+												<a href=""><i class="fa-solid fa-people-carry-box"></i></a>
+												<a href=""><i class="fa-solid fa-shipping-fast"></i></a>
+												<a href=""><i class="fa-solid fa-box-open"></i></a>
+												<a href=""><i class="fa-solid fa-undo"></i></a>-->
+											</div>
+										</div>
+									</div>
+								</th:block>
+							</div>
+							<div th:replace="fragments :: pagination('/orders', 'orders')"></div>
+						</div>
+						<footer th:replace="fragments :: footer"></footer>
+					</div>
+
+
+				</div>
+
+				<div class="modal fade" id="comfirmModal" tabindex="-1"
+					role="dialog">
+					<div class="modal-dialog" role="document">
+						<div class="modal-content">
+							<div class="modal-header">
+								<h5 class="modal-title" id="modalTitle">Delete Comfirmation</h5>
+								<button type="button" class="close" data-dismiss="modal"
+									aria-label="Close">
+									<span aria-hidden="true">&times;</span>
+								</button>
+							</div>
+							<div class="modal-body">
+								<p id="contentComfirmModal"></p>
+							</div>
+							<div class="modal-footer">
+								<a href="" class="btn btn-success" id="yesButton">Yes</a>
+
+								<button type="button" class="btn btn-danger"
+									data-dismiss="modal">No</button>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="modal fade " id="detailModal" tabindex="-1">
+		<div class="modal-dialog modal-xl">
+			<div class="modal-content"></div>
+		</div>
+	</div>
+
+
+	<script type="text/javascript">
+		modulUrl = "[[@{products}]]"
+		$(document).ready(
+				function() {
+					$('.link-detail').on(
+							"click",
+							function(e) {
+								e.preventDefault();
+								linkDetail = $(this).attr('href');
+
+								$("#detailModal").modal('show').find(
+										'.modal-content').load(linkDetail);
+
+							})
+
+					$('.link-detailOrder').on(
+							"click",
+							function(e) {
+								e.preventDefault();
+								linkDetail = $(this).attr('href');
+
+								$("#detailModal").modal('show').find(
+										'.modal-content').load(linkDetail);
+
+							})
+				});
+
+		function resetForm(id) {
+			window.location = "[[@{/products}]]";
+		}
+	</script>
+</body>
+</html>

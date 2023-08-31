@@ -76,7 +76,7 @@ public class ProductService {
 	public void changeEnabled(Integer id, boolean status) throws ProductNotFoundException {
 		Long count = productRepo.countById(id);
 		if (count == null || count == 0) {
-			throw new ProductNotFoundException("Could not find any product with ID " + id);
+			throw new ProductNotFoundException("Không tìm thấy sản phẩm có ID " + id);
 		}
 		productRepo.changeEnabled(id, status);
 	}
@@ -84,7 +84,7 @@ public class ProductService {
 	public void deleteProduct(Integer id) throws ProductNotFoundException {
 		Long count = productRepo.countById(id);
 		if (count == null || count == 0) {
-			throw new ProductNotFoundException("Could not find any product with ID " + id);
+			throw new ProductNotFoundException("Không tìm thấy sản phẩm có ID " + id);
 		}
 		productRepo.deleteById(id);
 	}
@@ -92,7 +92,7 @@ public class ProductService {
 	public Product get(Integer id) throws ProductNotFoundException {
 		Long count = productRepo.countById(id);
 		if (count == null || count == 0) {
-			throw new ProductNotFoundException("Could not find any product with ID " + id);
+			throw new ProductNotFoundException("Không tìm thấy sản phẩm có ID " + id);
 		} else {
 			return productRepo.findById(id).get();
 		}

@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Controller;
@@ -70,13 +71,24 @@ public class BrandController {
 	@GetMapping("/brands/new")
 	public String addBrand(Model model) {
 		model.addAttribute("brand", new Brand());
-		model.addAttribute("pageTitle", "Create New Brand");
+		model.addAttribute("pageTitle", "Tạo nhãn hiệu mới");
 		model.addAttribute("listCategories", categoryService.listCategoriesUsedInForm("asc"));
 		return "/brands/brands_form";
 	}
 	
 	@PostMapping("/brands/save")
 	public String save(Brand brand, Model model,@RequestParam("fileImage") MultipartFile multipartFile, RedirectAttributes redirectAttributes) throws IOException {
+		boolean isUnique = service.isUnique(brand.getId(), brand.getName());
+		if (!isUnique) {
+			model.addAttribute("brand", brand);
+			model.addAttribute("pageTitle", "Tạo nhãn hiệu mới");
+			model.addAttribute("listCategories", categoryService.listCategoriesUsedInForm("asc"));
+			
+			model.addAttribute("error_name", "error");
+			
+			return "/brands/brands_form";
+		}
+		
 		if (!multipartFile.isEmpty()) {
 			String fileName = StringUtils.cleanPath(multipartFile.getOriginalFilename());
 			brand.setLogo(fileName);
@@ -89,7 +101,7 @@ public class BrandController {
 		}
 		
 		
-		redirectAttributes.addFlashAttribute("message", "The brand has been saved sucessfully");
+		redirectAttributes.addFlashAttribute("message", "Nhãn hiệu đã lưu thanh công");
 		return "redirect:/brands";
 	}
 	
@@ -98,7 +110,7 @@ public class BrandController {
 		try {
 			model.addAttribute("brand", service.get(id));
 			
-			model.addAttribute("pageTitle", "Edit Brand id (" + id + ")");
+			model.addAttribute("pageTitle", "Chỉnh sửa nhãn hiệu id (" + id + ")");
 			model.addAttribute("listCategories", categoryService.listCategoriesUsedInForm("asc"));
 			return "/brands/brands_form";
 		} catch (BrandNotFoundException e) {
@@ -114,9 +126,11 @@ public class BrandController {
 			System.out.println("delete");
 			service.delete(id);
 			FileUploadUtil.removeDir("../brand-logos/"+id);
-			redirectAttributes.addFlashAttribute("message", "The brand id " + id + " has been deleted successfully");
+			redirectAttributes.addFlashAttribute("message", "Nhãn hiệu " + id + " đã xóa thành công");
 		} catch (BrandNotFoundException e) {
 			redirectAttributes.addFlashAttribute("message", e.getMessage());
+		} catch (DataIntegrityViolationException e) {
+			redirectAttributes.addFlashAttribute("message", "Nhãn hiệu " + id + " không thể xóa");
 		}
 		
 		return "redirect:/brands";

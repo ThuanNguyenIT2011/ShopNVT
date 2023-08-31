@@ -56,4 +56,8 @@ public class CartItemService {
 				 				.mapToDouble(c -> c.getQuantity() * c.getProduct().getPriceDiscountPercent())
 				 				.sum();
 	}
+	
+	public void deleteByCustomer(Customer customer) {
+		cartItemRepository.deleteByCustomer(customer.getId());
+	}
 }

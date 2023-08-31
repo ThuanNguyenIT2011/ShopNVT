@@ -1,0 +1,245 @@
+<div class="modal-header">
+	<h5 class="modal-title">Product Detail</h5>
+	<button type="button" class="close" data-dismiss="modal"
+		aria-label="Close">
+		<span aria-hidden="true">&times;</span>
+	</button>
+</div>
+<div class="modal-body">
+	<ul class="nav nav-tabs" id="myTab" role="tablist">
+		<li class="nav-item" role="presentation">
+			<button class="nav-link active" data-toggle="tab"
+				data-target="#overview" type="button">Tổng quan</button>
+		</li>
+		<li class="nav-item" role="presentation">
+			<button class="nav-link" data-toggle="tab" data-target="#description"
+				type="button" role="tab">Sản phẩm</button>
+		</li>
+		<li class="nav-item" role="presentation">
+			<button class="nav-link" data-toggle="tab" data-target="#ship"
+				type="button" role="tab">Shipping</button>
+		</li>
+		<li class="nav-item" role="presentation">
+			<button class="nav-link" id="messages-tab" data-toggle="tab"
+				data-target="#track" type="button" role="tab">Theo dỏi</button>
+		</li>
+	</ul>
+
+	<!-- Tab panes -->
+	<div class="tab-content" th:object="${order}">
+		<div class="tab-pane active p-3" id="overview" role="tabpanel">
+			<div class="form-group row">
+				<label for="name" class="col-sm-2 col-form-label">ID: </label>
+				<div class="col-sm-10">
+					<input type="text" class="form-control" th:field="*{id}"
+						readonly="readonly">
+				</div>
+			</div>
+
+			<div class="form-group row">
+				<label for="name" class="col-sm-2 col-form-label">Khách
+					hàng:</label>
+				<div class="col-sm-10">
+					<input type="text" class="form-control"
+						th:field="*{customer.fullName}" readonly="readonly">
+				</div>
+			</div>
+
+			<div class="form-group row">
+				<label for="name" class="col-sm-2 col-form-label">Tiền ship:
+				</label>
+				<div class="col-sm-10">
+						<p><span
+									th:if="${CURRENCY_SYMBOL_POSITION=='before'}">[[${CURRENCY_SYMBOL}]]
+										[[${#numbers.formatDecimal(order.shippingCost,1,THOUSANDS_POIINT_TYPE,DECIMAL_DIGITS,DECIMAL_POINT_TYPE)}]]</span>
+									<span th:unless="${CURRENCY_SYMBOL_POSITION=='before'}">
+										[[${#numbers.formatDecimal(order.shippingCost,1,THOUSANDS_POIINT_TYPE,DECIMAL_DIGITS,DECIMAL_POINT_TYPE)}]][[${CURRENCY_SYMBOL}]]
+								</span></p>
+				</div>
+			</div>
+
+			<div class="form-group row">
+				<label for="name" class="col-sm-2 col-form-label">Tổng tiền:</label>
+				<div class="col-sm-10">
+						<p><span
+									th:if="${CURRENCY_SYMBOL_POSITION=='before'}">[[${CURRENCY_SYMBOL}]]
+										[[${#numbers.formatDecimal(order.total,1,THOUSANDS_POIINT_TYPE,DECIMAL_DIGITS,DECIMAL_POINT_TYPE)}]]</span>
+									<span th:unless="${CURRENCY_SYMBOL_POSITION=='before'}">
+										[[${#numbers.formatDecimal(order.total,1,THOUSANDS_POIINT_TYPE,DECIMAL_DIGITS,DECIMAL_POINT_TYPE)}]][[${CURRENCY_SYMBOL}]]
+								</span></p>
+				</div>
+			</div>
+
+			<div class="form-group row">
+				<label for="enable" class="col-sm-2 col-form-label">Phương
+					thức thanh toán:</label>
+				<div class="col-sm-10">
+					<input type="text" class="form-control" th:field="*{paymentMethod}"
+						readonly="readonly">
+				</div>
+			</div>
+
+			<div class="form-group row">
+				<label for="enable" class="col-sm-2 col-form-label">Trạng
+					thái:</label>
+				<div class="col-sm-10">
+					<input type="text" class="form-control" th:field="*{orderStatus}"
+						readonly="readonly">
+				</div>
+			</div>
+
+
+			<div class="form-group row">
+				<label for="enable" class="col-sm-2 col-form-label">Ngày
+					tạo:</label>
+				<div class="col-sm-10">
+					<input type="text" class="form-control" th:field="*{dateOrdertime}"
+						readonly="readonly">
+				</div>
+			</div>
+		</div>
+
+		<div class="tab-pane" id="description" role="tabpanel">
+			<div class="row p-3">
+				<table class="table mt-2 table-striped">
+					<thead class="thead-dark">
+						<tr>
+							<th scope="col">Sản phẩm</th>
+							<th scope="col">Tên</th>
+							<th scope="col">Số lượng</th>
+							<th scope="col">Gía</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr th:each="detail : *{orderDetails}">
+							<td><img class="img-fluid"
+								style="height: 50px; width: 50px;" alt=""
+								th:src="@{${detail.product.mainImagePath}}"></td>
+
+							<td>[[${detail.product.name}]]</td>
+
+							<td>[[${detail.quantity}]]</td>
+							<td>
+								<span
+									th:if="${CURRENCY_SYMBOL_POSITION=='before'}">[[${CURRENCY_SYMBOL}]]
+										[[${#numbers.formatDecimal(detail.product.priceDiscountPercent,1,THOUSANDS_POIINT_TYPE,DECIMAL_DIGITS,DECIMAL_POINT_TYPE)}]]</span>
+									<span th:unless="${CURRENCY_SYMBOL_POSITION=='before'}">
+										[[${#numbers.formatDecimal(detail.product.priceDiscountPercent,1,THOUSANDS_POIINT_TYPE,DECIMAL_DIGITS,DECIMAL_POINT_TYPE)}]][[${CURRENCY_SYMBOL}]]
+								</span>							
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+
+		
+		<div class="tab-pane p-3" id="ship" role="tabpanel">
+			<div class="form-group row">
+				<label for="name" class="col-sm-2 col-form-label">Số ngày
+					giao:</label>
+				<div class="col-sm-10">
+					<input type="text" class="form-control" th:field="*{deliverDays}"
+						readonly="readonly">
+				</div>
+			</div>
+			
+			<div class="form-group row">
+				<label for="name" class="col-sm-2 col-form-label">Ngày giao hàng dự kiến:</label>
+				<div class="col-sm-10">
+					<input type="text" class="form-control" th:value="*{#dates.format(deliverDate, 'E, dd-MM-yyyy')}"
+						readonly="readonly">
+				</div>
+			</div>
+			
+			<div class="form-group row">
+				<label for="enable" class="col-sm-2 col-form-label">Tên:</label>
+				<div class="col-sm-10">
+					<input type="text" class="form-control" th:field="*{firstName}"
+						readonly="readonly">
+				</div>
+			</div>
+			
+			<div class="form-group row">
+				<label for="enable" class="col-sm-2 col-form-label">Họ:</label>
+				<div class="col-sm-10">
+					<input type="text" class="form-control" th:field="*{lastName}"
+						readonly="readonly">
+				</div>
+			</div>
+			
+			<div class="form-group row">
+				<label for="enable" class="col-sm-2 col-form-label">Số điện thoại:</label>
+				<div class="col-sm-10">
+					<input type="text" class="form-control" th:field="*{phoneNumber}"
+						readonly="readonly">
+				</div>
+			</div>
+			
+			<div class="form-group row">
+				<label for="enable" class="col-sm-2 col-form-label">Địa chỉ 1:</label>
+				<div class="col-sm-10">
+					<input type="text" class="form-control" th:field="*{addressLine1}"
+						readonly="readonly">
+				</div>
+			</div>
+			
+			<div class="form-group row">
+				<label for="enable" class="col-sm-2 col-form-label">Địa chỉ 2:</label>
+				<div class="col-sm-10">
+					<input type="text" class="form-control" th:field="*{addressLine2}"
+						readonly="readonly">
+				</div>
+			</div>
+			
+			<div class="form-group row">
+				<label for="enable" class="col-sm-2 col-form-label">Thành phố:</label>
+				<div class="col-sm-10">
+					<input type="text" class="form-control" th:field="*{city}"
+						readonly="readonly">
+				</div>
+			</div>
+			
+			<div class="form-group row">
+				<label for="enable" class="col-sm-2 col-form-label">Bang/Tỉnh:</label>
+				<div class="col-sm-10">
+					<input type="text" class="form-control" th:field="*{state.name}"
+						readonly="readonly">
+				</div>
+			</div>
+			
+			<div class="form-group row">
+				<label for="enable" class="col-sm-2 col-form-label">Quốc gia:</label>
+				<div class="col-sm-10">
+					<input type="text" class="form-control" th:field="*{state.country.name}"
+						readonly="readonly">
+				</div>
+			</div>
+
+		</div>
+
+		<div class="tab-pane" id="track" role="tabpanel">
+			<div class="row p-3">
+				<table class="table mt-2 table-striped">
+					<thead class="thead-dark">
+						<tr>
+							<th scope="col">Thời gian</th>
+							<th scope="col">Trạng thái</th>
+							<th scope="col">Ghi chú</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr th:each="detail : *{orderTracks}">
+							<td>[[${detail.dateUpdate}]]</td>
+							<td>[[${detail.orderStatus}]]</td>
+							<td>[[${detail.notes}]]</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+</div>
+<div class="modal-footer">
+	<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+</div>

@@ -4,8 +4,7 @@
 	<div th:fragment="content" remove="tag">
 		<div class="container-fluid">
 			<div class="form-group" style="min-height: 500px">
-				<label for="exampleFormControlSelect2">Example multiple
-					select</label> <select multiple class="form-control"
+				<label for="exampleFormControlSelect2">Tên quốc gia</label> <select multiple class="form-control"
 					id="exampleFormControlSelect2" style="min-height: 300px">
 					<th:block th:each="con :${listCountries}">
 						<option>[[${con.name}]]</option>

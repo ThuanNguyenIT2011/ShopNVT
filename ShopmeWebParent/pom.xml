@@ -18,8 +18,8 @@
 		<java.version>17</java.version>
 	</properties>
 	<modules>
-		<module>ShopmeBackEnd</module>
 		<module>ShopmeFrontEnd</module>
+		<module>ShopmeBackEnd</module>
 	</modules>
 	<dependencies>
 		<dependency>

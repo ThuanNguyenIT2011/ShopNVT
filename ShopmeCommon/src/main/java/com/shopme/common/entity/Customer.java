@@ -230,11 +230,21 @@ public class Customer {
 
 	@Override
 	public String toString() {
-		return "Customer [id=" + id + ", email=" + email + ", password=" + password + ", firstName=" + firstName
-				+ ", lastName=" + lastName + ", phoneNumber=" + phoneNumber + ", addressLine1=" + addressLine1
-				+ ", addressLine2=" + addressLine2 + ", city=" + city + ", state=" + state + ", postalCode="
-				+ postalCode + ", enabled=" + enabled + ", createdTime=" + createdTime + ", verificationCode="
-				+ verificationCode + ", country=" + country + "]";
+		String strAddress = "";
+		if (addressLine1 != null)
+			strAddress += addressLine1;
+		
+		if (addressLine2 != null || addressLine2.length() >= 0)
+			strAddress += '(' + addressLine1 + ')';
+		
+		strAddress += ' ' + state;
+		
+		if (city != null || city.length() >= 0)
+			strAddress += ", TP." + city ;
+		
+		strAddress += ' ' + country.getName();
+		
+		return strAddress;
 	}
 	
 	@Transient

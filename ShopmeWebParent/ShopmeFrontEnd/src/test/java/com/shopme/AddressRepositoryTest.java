@@ -29,7 +29,7 @@ public class AddressRepositoryTest {
 
 		Address newAddress = new Address();
 		newAddress.setCustomer(new Customer(customerId));
-		newAddress.setCountry(new Country(countryId));
+		//newAddress.setCountry(new Country(countryId));
 		newAddress.setFirstName("Thuận");
 		newAddress.setLastName("Nguyễn");
 		newAddress.setPhoneNumber("0943932775");

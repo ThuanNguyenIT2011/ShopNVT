@@ -25,7 +25,10 @@
 						<div class="dashboard-profile mb-2 " 
 							th:style="${defaultAddress ? 'height: 210px; background: #FAFAD2;' : 'height: 210px;'}">
 							<div class="dashboard-mod-title">
-								Địa chỉ &nbsp <a data-spm="dprofile_edit"
+								Địa chỉ &nbsp 
+								<a th:if="${param.redirect != null}" data-spm="dprofile_edit"
+									th:href="@{'/addresses/default/0?redirect=cart'}">Mặt định</a>
+								<a th:unless="${param.redirect != null}" data-spm="dprofile_edit"
 									th:href="@{/addresses/default/0}">Mặt định</a>
 							</div>
 							<div class="dashboard-info"
@@ -56,8 +59,12 @@
 										th:href="@{'/addresses/edit/' + ${address.id}}">Chỉnh sửa</a><span>|</span>
 									<a data-spm="dprofile_edit"
 										th:href="@{'/addresses/delete/' + ${address.id}}">Xóa</a> <span>|</span>
-									<a th:if="${address.defaultAddress == false}" data-spm="dprofile_edit"
+									<a th:if="${address.defaultAddress == false && param.redirect == null}" data-spm="dprofile_edit"
 										th:href="@{'/addresses/default/' + ${address.id}}">Mặt
+										định</a>
+										
+									<a th:if="${address.defaultAddress == false && param.redirect != null}" data-spm="dprofile_edit"
+										th:href="@{'/addresses/default/' + ${address.id} + '?redirect=cart'}">Mặt
 										định</a>
 								</div>
 								<div class="dashboard-info"
@@ -72,7 +79,7 @@
 											th:if="${address.addressLine2 != null && address.addressLine2!=''}">([[${address.addressLine2}]])</span>,
 										[[${address.state.name}]], <span
 											th:if="${address.city != null && address.city!=''}">
-											Thành phố [[${address.city}]]</span>, [[${address.country.name}]]
+											Thành phố [[${address.city}]]</span>, [[${address.state.country.name}]]
 									</div>
 								</div>
 							</div>

@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html>
+<header th:replace="fragments :: page_header(${pageTitle}, 'none')"></header>
+<body id="page-top">
+	<div id="wrapper" class="container-fuild">
+		<nav th:replace="nav :: menu"></nav>
+
+		<div id="content-wrapper" class="d-flex flex-column">
+			<div id="content">
+				<nav th:replace="nav :: header_customrer"></nav>
+
+				<div class="container-fluid">
+					<h1 class="h3 mb-2 text-gray-800">Manage Categories</h1>
+					<div class="card shadow mb-4">
+						<div class="card-header py-3">
+							<h6 class="m-0 font-weight-bold text-primary">[[${pageTitle}]]</h6>
+						</div>
+
+						<div class="card-body">
+							<form class="container" th:action="@{/orders/saveStatus}"
+								method="post" th:object="${order}" style="max-width: 700px;">
+								<input type="hidden" th:field="*{id}">
+								<div class="form-group row">
+									<label for="name" class="col-sm-2 col-form-label">ID: </label>
+									<div class="col-sm-10">
+										<input type="text" class="form-control" th:field="*{id}"
+											readonly="readonly">
+									</div>
+								</div>
+
+								<div class="form-group row">
+									<label for="name" class="col-sm-2 col-form-label">Khách
+										hàng:</label>
+									<div class="col-sm-10">
+										<input type="text" class="form-control"
+											th:field="*{customer.fullName}" readonly="readonly">
+									</div>
+								</div>
+
+								<div class="form-group row">
+									<label for="name" class="col-sm-2 col-form-label">Tiền
+										ship: </label>
+									<div class="col-sm-10">
+										<p>
+											<span th:if="${CURRENCY_SYMBOL_POSITION=='before'}">[[${CURRENCY_SYMBOL}]]
+												[[${#numbers.formatDecimal(order.shippingCost,1,THOUSANDS_POIINT_TYPE,DECIMAL_DIGITS,DECIMAL_POINT_TYPE)}]]</span>
+											<span th:unless="${CURRENCY_SYMBOL_POSITION=='before'}">
+												[[${#numbers.formatDecimal(order.shippingCost,1,THOUSANDS_POIINT_TYPE,DECIMAL_DIGITS,DECIMAL_POINT_TYPE)}]][[${CURRENCY_SYMBOL}]]
+											</span>
+										</p>
+									</div>
+								</div>
+
+								<div class="form-group row">
+									<label for="name" class="col-sm-2 col-form-label">Tổng
+										tiền:</label>
+									<div class="col-sm-10">
+										<p>
+											<span th:if="${CURRENCY_SYMBOL_POSITION=='before'}">[[${CURRENCY_SYMBOL}]]
+												[[${#numbers.formatDecimal(order.total,1,THOUSANDS_POIINT_TYPE,DECIMAL_DIGITS,DECIMAL_POINT_TYPE)}]]</span>
+											<span th:unless="${CURRENCY_SYMBOL_POSITION=='before'}">
+												[[${#numbers.formatDecimal(order.total,1,THOUSANDS_POIINT_TYPE,DECIMAL_DIGITS,DECIMAL_POINT_TYPE)}]][[${CURRENCY_SYMBOL}]]
+											</span>
+										</p>
+									</div>
+								</div>
+
+								<div class="form-group row">
+									<label for="enable" class="col-sm-2 col-form-label">Phương
+										thức thanh toán:</label>
+									<div class="col-sm-10">
+										<input type="text" class="form-control"
+											th:field="*{paymentMethod}" readonly="readonly">
+									</div>
+								</div>
+
+								<div class="form-group row">
+									<label for="enable" class="col-sm-2 col-form-label">Trạng
+										thái:</label>
+									<div class="col-sm-10">
+										<select th:field="*{orderStatus}"
+											class="form-control">
+											<th:block th:each="track : ${orderStatus}">
+												<option th:value="${track}">[[${track}]]</option>
+											</th:block>
+										</select>
+									</div>
+								</div>
+
+								<div class="text-center">
+									<input type="submit" class="btn btn-primary m-3" value="Save">
+									<input type="button" class="btn btn-secondary" value="Cancels"
+										id="buttonCancel">
+								</div>
+
+
+							</form>
+						</div>
+						<footer th:replace="fragments :: footer"></footer>
+					</div>
+				</div>
+
+			</div>
+		</div>
+	</div>
+
+
+
+	<div th:replace="modal_fragments :: modal_dialog"></div>
+
+
+	</div>
+
+
+	<!--  -->
+
+
+	<script type="text/javascript">
+		moduleURL = "[[@{/orders}]]";
+
+		
+
+		function showModalDialog(title, message) {
+			$("#contentModelWarning").text(message);
+			$("#modalTitle").text(title);
+			$("#modalDialog").modal();
+		}
+	</script>
+	<script type="text/javascript" th:src="@{/js/common_form.js}"></script>
+</body>
+</html>

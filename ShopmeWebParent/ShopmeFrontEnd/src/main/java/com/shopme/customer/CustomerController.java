@@ -76,12 +76,15 @@ public class CustomerController {
 		
 		
 		JavaMailSenderImpl mailSender = Utility.prepareMailSender(emailSetting);
+		mailSender.setDefaultEncoding("utf-8");
+
 		String toAddress = customer.getEmail();
 		String subject = emailSetting.getCustomerVerifySubject();
 		String content = emailSetting.getCustomerVerifyContent();
 		
 		MimeMessage message = mailSender.createMimeMessage();
 		MimeMessageHelper helper = new MimeMessageHelper(message);
+		
 		
 		helper.setFrom(emailSetting.getFromAddress(), emailSetting.getSenderName());
 		helper.setTo(toAddress);
@@ -95,9 +98,6 @@ public class CustomerController {
 		helper.setText(content, true);
 		
 		mailSender.send(message);
-		
-		System.out.println("to Address: " + toAddress);
-		System.out.println("Verify URL:" + urlVerify);
 	}
 	
 	@GetMapping("/verify")
@@ -149,9 +149,17 @@ public class CustomerController {
 	
 	@PostMapping("/update_account_details")
 	public String updateAccountDetail(Customer customer, Model model,
-			RedirectAttributes redirectAttributes) {
+			RedirectAttributes redirectAttributes, HttpServletRequest request) {
 		customerService.updateCustomer(customer);
+		
+		String redirect = request.getParameter("redirect");
+		if (redirect.equals("cart")) {
+			redirectAttributes.addFlashAttribute("message", "Cập nhập địa chỉ thành công.");
+			return "redirect:/" + redirect;
+		}
+
 		redirectAttributes.addFlashAttribute("message", "Your account details have been updated.");
+		
 		return "redirect:/customers/editProfile";
 	}
 	
